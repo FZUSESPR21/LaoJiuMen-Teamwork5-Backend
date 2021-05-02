@@ -6,7 +6,7 @@ import team.ljm.secw.entity.Resource;
 
 import java.util.List;
 
-public interface FileMapper {
+public interface ResourceMapper {
     void uploadFileDao(Resource resource)throws Exception;
 
     //@Select("select * from t_resource")

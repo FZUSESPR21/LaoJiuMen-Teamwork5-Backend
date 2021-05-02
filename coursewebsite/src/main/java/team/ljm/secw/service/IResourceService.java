@@ -5,7 +5,7 @@ import team.ljm.secw.entity.Resource;
 
 import java.util.List;
 
-public interface UploadService {
+public interface IResourceService {
     void uploadFile(Resource resource);
     List<Resource> allFile();
     Resource selectById(int id);

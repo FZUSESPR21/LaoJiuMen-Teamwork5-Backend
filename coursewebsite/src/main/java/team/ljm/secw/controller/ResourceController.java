@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import team.ljm.secw.entity.Resource;
-import team.ljm.secw.service.UploadService;
-import team.ljm.secw.service.impl.UploadServiceImpl;
+import team.ljm.secw.service.IResourceService;
 import team.ljm.secw.utils.DateUtils;
 import team.ljm.secw.utils.FileUtil;
 import team.ljm.secw.vo.ResponseVO;
@@ -31,14 +30,14 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/res")
-public class UploadController {
+public class ResourceController {
 
     @Autowired
-    private UploadService uploadService;
+    private IResourceService resourceService;
 
     @RequestMapping("/upload")
     @ResponseBody
-    public ResponseVO upload(Resource requestResource, MultipartFile file, HttpServletRequest request) {
+    public ResponseVO upload(@RequestBody Resource requestResource,@RequestBody MultipartFile file, HttpServletRequest request) {
         try {
             byte[] buf = file.getBytes();
             String originalFileName = file.getOriginalFilename();
@@ -61,7 +60,7 @@ public class UploadController {
             //String dateTime = DateUtils.dateToStrDateTime(date, "yyyy-MM-dd HH:mm:ss");
             requestResource.setUploadedAt(date);
             requestResource.setDownloads(0);
-            uploadService.uploadFile(requestResource);
+            resourceService.uploadFile(requestResource);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -69,20 +68,23 @@ public class UploadController {
         return new ResponseVO("200","success");
     }
 
-    @RequestMapping("/allfile")
+    @RequestMapping("/all")
     @ResponseBody
-    public ResponseVO allfile(){
-        List<Resource> list = uploadService.allFile();
+    public ResponseVO allFile(){
+        List<Resource> list = resourceService.allFile();
         /*for (Resource resource : list) {
             System.out.println(resource);
         }*/
         return new ResponseVO("200","success",list);
     }
 
-    @RequestMapping("/selectById")
+    @RequestMapping("/search")
     @ResponseBody
-    public ResponseVO selectById(int id){
-        Resource resource = uploadService.selectById(id);
+    public ResponseVO searchById(@RequestBody Resource requestResource){
+        int id = requestResource.getId();
+        Resource resource = resourceService.selectById(id);
         return new ResponseVO("200","success",resource);
     }
+
+
 }

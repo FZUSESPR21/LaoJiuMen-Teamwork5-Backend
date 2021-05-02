@@ -3,38 +3,40 @@ package team.ljm.secw.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.ljm.secw.entity.Resource;
-import team.ljm.secw.mapper.FileMapper;
-import team.ljm.secw.service.UploadService;
+import team.ljm.secw.mapper.ResourceMapper;
+import team.ljm.secw.service.IResourceService;
 
 import java.util.List;
 
-@Service("UploadService")
-public class UploadServiceImpl implements UploadService {
+@Service("ResourceService")
+public class ResourceServiceImpl implements IResourceService {
 
     @Autowired
-    private FileMapper filemapper;
+    private ResourceMapper resourceMapper;
 
+    @Override
     public void uploadFile(Resource resource) {
-        // TODO Auto-generated method stub
         try {
-            filemapper.uploadFileDao(resource);
+            resourceMapper.uploadFileDao(resource);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    @Override
     public List<Resource> allFile() {
-        List<Resource> list = filemapper.selectList();
+        List<Resource> list = resourceMapper.selectList();
         return list;
     }
 
+    @Override
     public Resource selectById(int id){
-        Resource resource = filemapper.selectById(id);
+        Resource resource = resourceMapper.selectById(id);
         return resource;
     }
 
+    @Override
     public int deleteById(int id) {
-        return filemapper.deleteById(id);
+        return resourceMapper.deleteById(id);
     }
 }
