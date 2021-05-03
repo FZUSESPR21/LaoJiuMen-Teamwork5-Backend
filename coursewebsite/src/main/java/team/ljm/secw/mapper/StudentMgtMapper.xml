@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.ljm.secw.mapper.StudentMgtMapper">
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into t_student(account, student_name, pwd, email, clazz_id)
+        values
+        <foreach collection="studentList" item="stu_item" separator=",">
+            (#{stu_item.account}, #{stu_item.studentName}, #{stu_item.pwd}, #{stu_item.email}, #{stu_item.clazzId})
+        </foreach>
+    </insert>
+
+    <select id="selectListByClazzId" resultType="team.ljm.secw.entity.Student">
+        select id, account, student_name, email
+        from t_student
+        where clazz_id = #{clazzId}
+    </select>
+
+    <insert id="insert">
+        insert into t_student(account, student_name, pwd, email, clazz_id)
+        values (#{account}, #{studentName}, #{pwd}, #{email}, #{clazzId})
+    </insert>
+
+    <update id="update">
+        update t_student
+        set account = #{account}, student_name = #{studentName}, email = #{email}
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from t_student
+        where id = #{id}
+    </delete>
+
+</mapper>
