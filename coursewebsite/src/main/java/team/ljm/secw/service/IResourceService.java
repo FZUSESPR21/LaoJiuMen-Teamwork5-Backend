@@ -6,8 +6,8 @@ import team.ljm.secw.entity.Resource;
 import java.util.List;
 
 public interface IResourceService {
-    void uploadFile(Resource resource);
-    List<Resource> allFile();
-    Resource selectById(int id);
-    int deleteById(int id);
+    void add(Resource resource);
+    List<Resource> findAll();
+    Resource findById(int id);
+    int remove(int id);
 }

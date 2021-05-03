@@ -60,7 +60,7 @@ public class ResourceController {
             //String dateTime = DateUtils.dateToStrDateTime(date, "yyyy-MM-dd HH:mm:ss");
             requestResource.setUploadedAt(date);
             requestResource.setDownloads(0);
-            resourceService.uploadFile(requestResource);
+            resourceService.add(requestResource);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class ResourceController {
     @RequestMapping("/all")
     @ResponseBody
     public ResponseVO allFile(){
-        List<Resource> list = resourceService.allFile();
+        List<Resource> list = resourceService.findAll();
         /*for (Resource resource : list) {
             System.out.println(resource);
         }*/
@@ -82,7 +82,7 @@ public class ResourceController {
     @ResponseBody
     public ResponseVO searchById(@RequestBody Resource requestResource){
         int id = requestResource.getId();
-        Resource resource = resourceService.selectById(id);
+        Resource resource = resourceService.findById(id);
         return new ResponseVO("200","success",resource);
     }
 

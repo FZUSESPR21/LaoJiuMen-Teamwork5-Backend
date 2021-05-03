@@ -15,28 +15,24 @@ public class ResourceServiceImpl implements IResourceService {
     private ResourceMapper resourceMapper;
 
     @Override
-    public void uploadFile(Resource resource) {
-        try {
-            resourceMapper.uploadFileDao(resource);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void add(Resource resource) {
+        resourceMapper.insert(resource);
     }
 
     @Override
-    public List<Resource> allFile() {
+    public List<Resource> findAll() {
         List<Resource> list = resourceMapper.selectList();
         return list;
     }
 
     @Override
-    public Resource selectById(int id){
+    public Resource findById(int id){
         Resource resource = resourceMapper.selectById(id);
         return resource;
     }
 
     @Override
-    public int deleteById(int id) {
-        return resourceMapper.deleteById(id);
+    public int remove(int id) {
+        return resourceMapper.delete(id);
     }
 }

@@ -7,13 +7,13 @@ import team.ljm.secw.entity.Resource;
 import java.util.List;
 
 public interface ResourceMapper {
-    void uploadFileDao(Resource resource)throws Exception;
+    void insert(Resource resource);
 
     //@Select("select * from t_resource")
     List<Resource> selectList();
 
     Resource selectById(int id);
 
-    int deleteById(int id);
+    int delete(int id);
 
 }

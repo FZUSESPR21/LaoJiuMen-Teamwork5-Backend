@@ -16,31 +16,27 @@ public class HomeworkServiceImpl implements IHomeworkService {
 
     @Override
     public void insert(Homework homework) {
-        try {
-            homeworkMapper.insert(homework);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        homeworkMapper.insert(homework);
     }
 
     @Override
-    public List<Homework> all() {
+    public List<Homework> findAll() {
         List<Homework> list = homeworkMapper.selectList();
         return list;
     }
 
     @Override
-    public Homework selectById(int id) {
+    public Homework findById(int id) {
         return homeworkMapper.selectById(id);
     }
 
     @Override
-    public int update(Homework homework) {
+    public int modify(Homework homework) {
         return homeworkMapper.update(homework);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int remove(int id) {
         return homeworkMapper.deleteById(id);
     }
 }

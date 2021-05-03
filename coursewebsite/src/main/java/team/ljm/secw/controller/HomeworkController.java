@@ -22,7 +22,7 @@ public class HomeworkController {
     @RequestMapping("/all")
     @ResponseBody
     public ResponseVO allHomework(){
-        List<Homework> list = homeworkService.all();
+        List<Homework> list = homeworkService.findAll();
         return new ResponseVO("200","success",list);
     }
 
@@ -30,7 +30,7 @@ public class HomeworkController {
     @ResponseBody
     public ResponseVO searchById(@RequestBody Homework requestHomework){
         int id = requestHomework.getId();
-        Homework homework = homeworkService.selectById(id);
+        Homework homework = homeworkService.findById(id);
         return new ResponseVO("200","success",homework);
     }
 
@@ -38,7 +38,7 @@ public class HomeworkController {
     @ResponseBody
     public ResponseVO delete(@RequestBody Homework requestHomework){
         int id = requestHomework.getId();
-        int rel = homeworkService.deleteById(id);
+        int rel = homeworkService.remove(id);
         ResponseVO response = new ResponseVO("200","success");
         if (rel > 0);
         else {

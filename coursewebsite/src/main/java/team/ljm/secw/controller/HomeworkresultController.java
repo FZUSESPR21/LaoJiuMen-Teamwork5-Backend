@@ -24,7 +24,7 @@ public class HomeworkresultController {
     @ResponseBody
     public ResponseVO selectByHwid(@RequestBody Homework requestHomework){
         int id = requestHomework.getId();
-        List<HomeworkResult> list = homeworkresultService.selectByHwid(id);
+        List<HomeworkResult> list = homeworkresultService.findListByHwid(id);
         return new ResponseVO("200","success",list);
     }
 

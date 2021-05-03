@@ -6,7 +6,7 @@ import team.ljm.secw.entity.Resource;
 import java.util.List;
 
 public interface HomeworkMapper {
-    void insert(Homework homework)throws Exception;
+    void insert(Homework homework);
 
     List<Homework> selectList();
 

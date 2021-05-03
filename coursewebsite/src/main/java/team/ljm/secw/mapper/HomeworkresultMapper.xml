@@ -9,4 +9,24 @@
             )
     </select>
 
+    <select id="selectById" resultType="team.ljm.secw.entity.HomeworkResult">
+        select * from t_homework_result where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="team.ljm.secw.dto.HomeworkresultDTO" keyProperty="id" useGeneratedKeys="true">
+        insert into t_homework_result (content, file_path, submitted_at)
+        values (#{content},#{filePath},#{submittedAt})
+    </insert>
+
+    <update id="update" parameterType="team.ljm.secw.dto.HomeworkresultDTO">
+        update t_homework_result set content = #{content}, file_path = #{filePath},score = #{score},remark = #{remark}
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from t_homework_result where id = #{id}
+    </delete>
+
+
+
 </mapper>

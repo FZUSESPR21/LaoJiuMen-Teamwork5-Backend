@@ -12,12 +12,12 @@
         select * from t_resource where id = #{id}
     </select>
 
-    <insert id="uploadFileDao" parameterType="team.ljm.secw.entity.Resource">
+    <insert id="insert" parameterType="team.ljm.secw.entity.Resource">
         insert into t_resource (resource_name,type,downloads,file_path,teacher_id,clazz_id)
         values (#{resourceName},#{type},#{downloads},#{filePath},#{teacherId},#{clazzId})
     </insert>
 
-    <delete id="deleteById" parameterType="int">
+    <delete id="delete" parameterType="int">
         delete from t_resource where id = #{id}
     </delete>
 </mapper>

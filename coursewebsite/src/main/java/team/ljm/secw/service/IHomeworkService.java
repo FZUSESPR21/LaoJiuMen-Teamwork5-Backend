@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface IHomeworkService {
     void insert(Homework homework);
-    List<Homework> all();
-    Homework selectById(int id);
-    int update(Homework homework);
-    int deleteById(int id);
+    List<Homework> findAll();
+    Homework findById(int id);
+    int modify(Homework homework);
+    int remove(int id);
 }
