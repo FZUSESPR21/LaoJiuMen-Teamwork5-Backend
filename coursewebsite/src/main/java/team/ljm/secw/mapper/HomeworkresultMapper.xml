@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.ljm.secw.mapper.HomeworkresultMapper">
+    <select id="selectListById" resultType="team.ljm.secw.entity.HomeworkResult">
+        select * from t_homework_result where id in (
+            select result_id from t_stu_hw_rslt where homework_id = #{id}
+            )
+    </select>
+
+</mapper>

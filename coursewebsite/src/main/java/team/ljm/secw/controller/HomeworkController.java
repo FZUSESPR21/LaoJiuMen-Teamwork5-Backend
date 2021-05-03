@@ -34,4 +34,18 @@ public class HomeworkController {
         return new ResponseVO("200","success",homework);
     }
 
+    @RequestMapping("/delete")
+    @ResponseBody
+    public ResponseVO delete(@RequestBody Homework requestHomework){
+        int id = requestHomework.getId();
+        int rel = homeworkService.deleteById(id);
+        ResponseVO response = new ResponseVO("200","success");
+        if (rel > 0);
+        else {
+            response.setCode("500");
+            response.setMessage("failure");
+        }
+        return response;
+    }
+
 }
