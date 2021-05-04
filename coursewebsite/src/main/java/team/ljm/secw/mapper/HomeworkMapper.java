@@ -6,9 +6,12 @@ import team.ljm.secw.entity.Resource;
 import java.util.List;
 
 public interface HomeworkMapper {
-    void insert(Homework homework);
+
+    int insert(Homework homework);
 
     List<Homework> selectList();
+
+    List<Homework> selectListByClazzId(int id);
 
     Homework selectById(int id);
 

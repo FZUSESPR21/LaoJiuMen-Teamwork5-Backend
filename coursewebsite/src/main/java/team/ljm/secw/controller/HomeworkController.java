@@ -19,11 +19,33 @@ public class HomeworkController {
     @Autowired
     private IHomeworkService homeworkService;
 
-    @RequestMapping("/all")
+    @RequestMapping("/teacher/all")
     @ResponseBody
     public ResponseVO allHomework(){
         List<Homework> list = homeworkService.findAll();
         return new ResponseVO("200","success",list);
+    }
+
+    @RequestMapping("/teacher/list_search")
+    @ResponseBody
+    public ResponseVO myClassHomework(@RequestBody int clazzId) {
+        List<Homework> list = homeworkService.findListByClazzId(clazzId);
+        return new ResponseVO("200", "success", list);
+    }
+
+    @RequestMapping("/teacher/add")
+    @ResponseBody
+    public ResponseVO addHomework(@RequestBody Homework requestHomework){
+        homeworkService.add(requestHomework);
+        return new ResponseVO("200","success");
+    }
+
+    @RequestMapping("/teacher/update")
+    @ResponseBody
+    public ResponseVO updateHomework(@RequestBody Homework requestHomework){
+        int rel = homeworkService.modify(requestHomework);
+        ResponseVO response = new ResponseVO("200","success");
+        return response;
     }
 
     @RequestMapping("/search")
@@ -34,18 +56,19 @@ public class HomeworkController {
         return new ResponseVO("200","success",homework);
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("/teacher/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody Homework requestHomework){
         int id = requestHomework.getId();
         int rel = homeworkService.remove(id);
         ResponseVO response = new ResponseVO("200","success");
-        if (rel > 0);
-        else {
-            response.setCode("500");
-            response.setMessage("failure");
-        }
         return response;
     }
 
+    @RequestMapping("/student/all")
+    @ResponseBody
+    public ResponseVO classHomework(@RequestBody int clazzId) {
+        List<Homework> list = homeworkService.findListByClazzId(clazzId);
+        return new ResponseVO("200", "success", list);
+    }
 }

@@ -13,20 +13,22 @@ import team.ljm.secw.vo.ResponseVO;
 import java.util.List;
 
 @Controller
-@RequestMapping("/homeworkresult")
+@RequestMapping("/homework_result")
 public class HomeworkresultController {
 
     @Autowired
     private IHomeworkresultService homeworkresultService;
 
     //根据作业id获取结果列表
-    @RequestMapping("/searchlist")
+    @RequestMapping("/teacher/list_search")
     @ResponseBody
-    public ResponseVO selectByHwid(@RequestBody Homework requestHomework){
+    public ResponseVO selectByHwId(@RequestBody Homework requestHomework){
         int id = requestHomework.getId();
         List<HomeworkResult> list = homeworkresultService.findListByHwid(id);
         return new ResponseVO("200","success",list);
     }
+
+
 
 
 }

@@ -19,13 +19,15 @@ import team.ljm.secw.utils.FileUtil;
 import team.ljm.secw.vo.ResponseVO;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
 
 
 @Controller
@@ -35,7 +37,7 @@ public class ResourceController {
     @Autowired
     private IResourceService resourceService;
 
-    @RequestMapping("/upload")
+    @RequestMapping("/teacher/upload")
     @ResponseBody
     public ResponseVO upload(@RequestBody Resource requestResource,@RequestBody MultipartFile file, HttpServletRequest request) {
         try {
@@ -68,13 +70,24 @@ public class ResourceController {
         return new ResponseVO("200","success");
     }
 
-    @RequestMapping("/all")
+    @RequestMapping("/teacher/real_all")
     @ResponseBody
     public ResponseVO allFile(){
         List<Resource> list = resourceService.findAll();
-        /*for (Resource resource : list) {
-            System.out.println(resource);
-        }*/
+        return new ResponseVO("200","success",list);
+    }
+
+    @RequestMapping("/teacher/list_search")
+    @ResponseBody
+    public ResponseVO searchFileByClazzId(@RequestBody int id){
+        List<Resource> list = resourceService.findListByClazzId(id);
+        return new ResponseVO("200","success",list);
+    }
+
+    @RequestMapping("/student/all")
+    @ResponseBody
+    public ResponseVO classFile(@RequestBody int id){
+        List<Resource> list = resourceService.findListByClazzId(id);
         return new ResponseVO("200","success",list);
     }
 
@@ -86,5 +99,12 @@ public class ResourceController {
         return new ResponseVO("200","success",resource);
     }
 
+    @RequestMapping("/teacher/delete")
+    @ResponseBody
+    public ResponseVO delete(@RequestBody Resource requestResource){
+        int id = requestResource.getId();
+        resourceService.remove(id);
+        return new ResponseVO("200","success");
+    }
 
 }

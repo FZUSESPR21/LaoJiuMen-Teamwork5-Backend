@@ -26,6 +26,13 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
+    public List<Resource> findListByClazzId(int id) {
+        List<Resource> list = resourceMapper.selectListByClazzId(id);
+        return list;
+    }
+
+
+    @Override
     public Resource findById(int id){
         Resource resource = resourceMapper.selectById(id);
         return resource;

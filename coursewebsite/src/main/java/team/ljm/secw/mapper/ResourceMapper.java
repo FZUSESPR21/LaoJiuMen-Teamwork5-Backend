@@ -14,6 +14,8 @@ public interface ResourceMapper {
 
     Resource selectById(int id);
 
+    List<Resource> selectListByClazzId(int id);
+
     int delete(int id);
 
 }

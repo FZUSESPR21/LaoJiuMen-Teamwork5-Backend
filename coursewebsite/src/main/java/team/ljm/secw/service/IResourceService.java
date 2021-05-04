@@ -8,6 +8,7 @@ import java.util.List;
 public interface IResourceService {
     void add(Resource resource);
     List<Resource> findAll();
+    List<Resource> findListByClazzId(int id);
     Resource findById(int id);
     int remove(int id);
 }

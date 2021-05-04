@@ -15,12 +15,18 @@ public class HomeworkServiceImpl implements IHomeworkService {
     private HomeworkMapper homeworkMapper;
 
     @Override
-    public void insert(Homework homework) {
-        homeworkMapper.insert(homework);
+    public int add(Homework homework) {
+        return homeworkMapper.insert(homework);
     }
 
     @Override
     public List<Homework> findAll() {
+        List<Homework> list = homeworkMapper.selectList();
+        return list;
+    }
+
+    @Override
+    public List<Homework> findListByClazzId(int id) {
         List<Homework> list = homeworkMapper.selectList();
         return list;
     }

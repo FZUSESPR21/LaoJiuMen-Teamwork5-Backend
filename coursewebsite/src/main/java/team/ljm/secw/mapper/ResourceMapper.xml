@@ -8,6 +8,10 @@
         select * from t_resource
     </select>
 
+    <select id="selectListByClazzId" resultType="team.ljm.secw.entity.Resource">
+        select * from t_resource where clazz_id = #{id}
+    </select>
+
     <select id="selectById" parameterType="int" resultType="team.ljm.secw.entity.Resource">
         select * from t_resource where id = #{id}
     </select>
