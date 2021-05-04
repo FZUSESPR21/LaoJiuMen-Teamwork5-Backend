@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.ljm.secw.mapper.StuhwrsMapper">
 
-    <select id="searchByAccount">
+    <select id="selectByAccount" resultType="int">
         select id from t_stu_hw_rslt where account = #{account} and homework_id = #{homeworkId}
     </select>
 

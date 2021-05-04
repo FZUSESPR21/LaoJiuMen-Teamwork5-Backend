@@ -32,6 +32,11 @@ public class HomeworkresultServiceImpl implements IHomeworkresultService {
     }
 
     @Override
+    public int findResultId(String account, int homeworkId) {
+        return stuhwrsMapper.selectByAccount(account,homeworkId);
+    }
+
+    @Override
     public void add(HomeworkresultDTO homeworkresultDTO) {
         homeworkresultMapper.insert(homeworkresultDTO);
         stuhwrsMapper.insert(homeworkresultDTO);
@@ -48,4 +53,6 @@ public class HomeworkresultServiceImpl implements IHomeworkresultService {
         stuhwrsMapper.delete(homeworkresultDTO);
         return rel;
     }
+
+
 }

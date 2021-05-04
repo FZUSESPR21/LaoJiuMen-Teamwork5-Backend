@@ -50,9 +50,8 @@ public class ResourceController {
             /*指定路径
             if (requestResource.getFilePath() == null)fileUrl = "/upload/" + time + originalFileName;
             else fileUrl = "/" + requestResource.getFilePath()+ "/" + time + originalFileName;*/
-
             //
-            fileUrl = "/" + requestResource.getTeacherId() +"/" + requestResource.getTeacherId() + "/" + time + originalFileName;
+            fileUrl = "/WEB-INF/resource/" + requestResource.getTeacherId() +"/" + requestResource.getTeacherId() + "/" + originalFileName;
             fileUrl = request.getSession().getServletContext().getRealPath(fileUrl);
             //向url地址存储文件
             FileUtil.writeFileToUrl(file, fileUrl);
@@ -105,6 +104,33 @@ public class ResourceController {
         int id = requestResource.getId();
         resourceService.remove(id);
         return new ResponseVO("200","success");
+    }
+
+    @RequestMapping(value = "/download")
+    public void download(HttpServletRequest request, HttpServletResponse response ,@RequestBody Resource requestResource){
+        try {
+            String filePath =  request.getSession().getServletContext().getRealPath(requestResource.getFilePath());
+            File file = new File(filePath);//如果文件存在的话
+            if (file.exists()) {//获取输入流
+                InputStream bis = new BufferedInputStream(new FileInputStream(file));//假如以中文名下载的话
+                String filename = requestResource.getResourceName() ;
+                filename = URLEncoder.encode(filename, "UTF-8" );//设置文件下载头
+                response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+                response.setContentType ( "multipart/form-data" );
+                BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());int len = 0;
+                while ((len = bis.read()) != -1) {
+                    out.write(len);
+                }
+                out.close();
+            }else
+                {
+                        //return new ResponseVO("404","not found");
+                }
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            //return new ResponseVO("500","error");
+        }
+        //return new ResponseVO("200","success");
     }
 
 }
