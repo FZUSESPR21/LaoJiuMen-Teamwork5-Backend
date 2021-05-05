@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import team.ljm.secw.dto.HomeworkresultDTO;
+import team.ljm.secw.entity.HomeworkResult;
 import team.ljm.secw.entity.Resource;
 import team.ljm.secw.service.IResourceService;
 import team.ljm.secw.utils.DateUtils;
@@ -22,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,21 +42,19 @@ public class ResourceController {
     @Autowired
     private IResourceService resourceService;
 
+    //课程资源，教师，上传
     @RequestMapping("/teacher/upload")
     @ResponseBody
     public ResponseVO upload(@RequestBody Resource requestResource,@RequestBody MultipartFile file, HttpServletRequest request) {
         try {
             byte[] buf = file.getBytes();
             String originalFileName = file.getOriginalFilename();
-            //时间戳
-            String time = FileUtil.createFileTimestamp();
-            //文件url		/upload/1231231231231a.txt
             String fileUrl = "";
             /*指定路径
             if (requestResource.getFilePath() == null)fileUrl = "/upload/" + time + originalFileName;
             else fileUrl = "/" + requestResource.getFilePath()+ "/" + time + originalFileName;*/
             //
-            fileUrl = "/WEB-INF/resource/" + requestResource.getTeacherId() +"/" + requestResource.getTeacherId() + "/" + originalFileName;
+            fileUrl = "/WEB-INF/resource/" + requestResource.getTeacherId() +"/" + requestResource.getClazzId() + "/" + originalFileName;
             fileUrl = request.getSession().getServletContext().getRealPath(fileUrl);
             //向url地址存储文件
             FileUtil.writeFileToUrl(file, fileUrl);
@@ -69,6 +72,33 @@ public class ResourceController {
         return new ResponseVO("200","success");
     }
 
+    //学习计划，教师，更新
+    @RequestMapping("/teacher/update_other")
+    @ResponseBody
+    public ResponseVO submitOther(@RequestBody Resource requestResource, @RequestBody MultipartFile file, HttpServletRequest request) {
+        try {
+            byte[] buf = file.getBytes();
+            String originalFileName = file.getOriginalFilename();
+            String fileUrl = "";
+            fileUrl = "/WEB-INF/other/学习计划/" + requestResource.getTeacherId() +"/" + requestResource.getClazzId() + "/" + originalFileName;
+            fileUrl = request.getSession().getServletContext().getRealPath(fileUrl);
+            //向url地址存储文件
+            FileUtil.writeFileToUrl(file, fileUrl);
+            requestResource.setResourceName(originalFileName);
+            requestResource.setFilePath(fileUrl);
+            Date date = new Date();
+            requestResource.setUploadedAt(date);
+            requestResource.setDownloads(0);
+            requestResource.setType(1);
+            resourceService.modifyOtherResource(requestResource);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseVO("200","success");
+    }
+
+    //课程资源，教师，全部
     @RequestMapping("/teacher/real_all")
     @ResponseBody
     public ResponseVO allFile(){
@@ -76,6 +106,7 @@ public class ResourceController {
         return new ResponseVO("200","success",list);
     }
 
+    //课程资源，教师按班级查
     @RequestMapping("/teacher/list_search")
     @ResponseBody
     public ResponseVO searchFileByClazzId(@RequestBody int id){
@@ -83,6 +114,7 @@ public class ResourceController {
         return new ResponseVO("200","success",list);
     }
 
+    //课程资源，学生按班级查
     @RequestMapping("/student/all")
     @ResponseBody
     public ResponseVO classFile(@RequestBody int id){
@@ -90,6 +122,15 @@ public class ResourceController {
         return new ResponseVO("200","success",list);
     }
 
+    //课程其他资源，按班级查
+    @RequestMapping("/search_other")
+    @ResponseBody
+    public ResponseVO otherFile(@RequestBody int id){
+        List<Resource> list = resourceService.findOtherListByClazzId(id);
+        return new ResponseVO("200","success",list);
+    }
+
+    //课程资源，按单个id查
     @RequestMapping("/search")
     @ResponseBody
     public ResponseVO searchById(@RequestBody Resource requestResource){
@@ -98,6 +139,7 @@ public class ResourceController {
         return new ResponseVO("200","success",resource);
     }
 
+    //课程资源，教师，删除
     @RequestMapping("/teacher/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody Resource requestResource){
@@ -106,6 +148,7 @@ public class ResourceController {
         return new ResponseVO("200","success");
     }
 
+    //所有资源，下载
     @RequestMapping(value = "/download")
     public void download(HttpServletRequest request, HttpServletResponse response ,@RequestBody Resource requestResource){
         try {

@@ -14,7 +14,9 @@ public interface ResourceMapper {
 
     Resource selectById(int id);
 
-    List<Resource> selectListByClazzId(int id);
+    List<Resource> selectListByClazzId(int id,int type);
+
+    int update(Resource resource);
 
     int delete(int id);
 

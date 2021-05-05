@@ -49,6 +49,7 @@ public class HomeworkresultController {
         return new ResponseVO("200","success");
     }
 
+    //删除一个作业结果
     @RequestMapping("/teacher/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody HomeworkresultDTO requestHomeworkresultDTO, HttpServletRequest request){
@@ -64,6 +65,7 @@ public class HomeworkresultController {
         return new ResponseVO("200","success");
     }
 
+    //学生提交作业（包括更新）
     @RequestMapping("/student/submit")
     @ResponseBody
     public ResponseVO submit(@RequestBody HomeworkresultDTO requestHomeworkresultDTO, @RequestBody MultipartFile file, HttpServletRequest request) {

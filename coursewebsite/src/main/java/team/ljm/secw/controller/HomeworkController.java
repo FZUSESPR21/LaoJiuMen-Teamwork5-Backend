@@ -19,6 +19,7 @@ public class HomeworkController {
     @Autowired
     private IHomeworkService homeworkService;
 
+    //课程作业，教师，全部
     @RequestMapping("/teacher/all")
     @ResponseBody
     public ResponseVO allHomework(){
@@ -26,6 +27,7 @@ public class HomeworkController {
         return new ResponseVO("200","success",list);
     }
 
+    //课程作业，教师，按班级查
     @RequestMapping("/teacher/list_search")
     @ResponseBody
     public ResponseVO myClassHomework(@RequestBody int clazzId) {
@@ -33,6 +35,7 @@ public class HomeworkController {
         return new ResponseVO("200", "success", list);
     }
 
+    //课程作业，教师，发布新作业
     @RequestMapping("/teacher/add")
     @ResponseBody
     public ResponseVO addHomework(@RequestBody Homework requestHomework){
@@ -40,6 +43,7 @@ public class HomeworkController {
         return new ResponseVO("200","success");
     }
 
+    //课程作业，教师，修改作业
     @RequestMapping("/teacher/update")
     @ResponseBody
     public ResponseVO updateHomework(@RequestBody Homework requestHomework){
@@ -48,6 +52,7 @@ public class HomeworkController {
         return response;
     }
 
+    //课程作业，教师学生，按id查
     @RequestMapping("/search")
     @ResponseBody
     public ResponseVO searchById(@RequestBody Homework requestHomework){
@@ -56,6 +61,7 @@ public class HomeworkController {
         return new ResponseVO("200","success",homework);
     }
 
+    //课程作业，教师，删除
     @RequestMapping("/teacher/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody Homework requestHomework){
@@ -65,6 +71,7 @@ public class HomeworkController {
         return response;
     }
 
+    //课程作业，学生，按班级查
     @RequestMapping("/student/all")
     @ResponseBody
     public ResponseVO classHomework(@RequestBody int clazzId) {

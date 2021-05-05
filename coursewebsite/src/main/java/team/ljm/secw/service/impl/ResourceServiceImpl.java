@@ -27,7 +27,13 @@ public class ResourceServiceImpl implements IResourceService {
 
     @Override
     public List<Resource> findListByClazzId(int id) {
-        List<Resource> list = resourceMapper.selectListByClazzId(id);
+        List<Resource> list = resourceMapper.selectListByClazzId(id,0);
+        return list;
+    }
+
+    @Override
+    public List<Resource> findOtherListByClazzId(int id) {
+        List<Resource> list = resourceMapper.selectListByClazzId(id,1);
         return list;
     }
 
@@ -39,7 +45,14 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
+    public int modifyOtherResource(Resource resource) {
+        return resourceMapper.update(resource);
+    }
+
+    @Override
     public int remove(int id) {
         return resourceMapper.delete(id);
     }
+
+
 }

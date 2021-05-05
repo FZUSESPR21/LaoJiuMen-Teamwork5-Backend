@@ -9,7 +9,7 @@
     </select>
 
     <select id="selectListByClazzId" resultType="team.ljm.secw.entity.Resource">
-        select * from t_resource where clazz_id = #{id}
+        select * from t_resource where clazz_id = #{id} and type = #{type}
     </select>
 
     <select id="selectById" parameterType="int" resultType="team.ljm.secw.entity.Resource">
@@ -24,4 +24,10 @@
     <delete id="delete" parameterType="int">
         delete from t_resource where id = #{id}
     </delete>
+
+    <update id="update" parameterType="team.ljm.secw.entity.Resource">
+        update t_resource set resource_name = #{resourceName},downloads = #{downloads},file_path = #{filePath},
+                              teacher_id = #{teacherId},clazz_id = #{clazzId}
+        where id = #{id}
+    </update>
 </mapper>

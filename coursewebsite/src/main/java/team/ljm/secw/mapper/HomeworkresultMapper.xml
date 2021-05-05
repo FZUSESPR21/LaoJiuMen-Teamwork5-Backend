@@ -27,6 +27,4 @@
         delete from t_homework_result where id = #{id}
     </delete>
 
-
-
 </mapper>
