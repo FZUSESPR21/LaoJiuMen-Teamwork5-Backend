@@ -5,15 +5,17 @@
 <mapper namespace="team.ljm.secw.mapper.ResourceMapper">
 
     <select id="selectList" resultType="team.ljm.secw.entity.Resource">
-        select * from t_resource
+        select id, resource_name, type, downloads, file_path, teacher_id, clazz_id, uploaded_at from t_resource
     </select>
 
     <select id="selectListByClazzId" resultType="team.ljm.secw.entity.Resource">
-        select * from t_resource where clazz_id = #{id} and type = #{type}
+        select id, resource_name, type, downloads, file_path, teacher_id, clazz_id, uploaded_at from t_resource
+        where clazz_id = #{id} and type = #{type}
     </select>
 
     <select id="selectById" parameterType="int" resultType="team.ljm.secw.entity.Resource">
-        select * from t_resource where id = #{id}
+        select id, resource_name, type, downloads, file_path, teacher_id, clazz_id, uploaded_at from t_resource
+        where id = #{id}
     </select>
 
     <insert id="insert" parameterType="team.ljm.secw.entity.Resource">

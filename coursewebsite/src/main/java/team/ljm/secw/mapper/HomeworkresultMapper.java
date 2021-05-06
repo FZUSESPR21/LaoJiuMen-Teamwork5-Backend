@@ -1,7 +1,5 @@
 package team.ljm.secw.mapper;
 
-import team.ljm.secw.dto.HomeworkresultDTO;
-import team.ljm.secw.entity.Homework;
 import team.ljm.secw.entity.HomeworkResult;
 
 import java.util.List;
@@ -9,7 +7,10 @@ import java.util.List;
 public interface HomeworkresultMapper {
     List<HomeworkResult> selectListById(int id);
     HomeworkResult selectById(int id);
-    int insert(HomeworkresultDTO homeworkresultDTO);
-    int update(HomeworkresultDTO homeworkresultDTO);
+    //获取成绩，需要学生id与作业id，同时用于提交状态判断
+    int selectScore (HomeworkResult homeworkResult);
+    int insert(HomeworkResult homeworkResult);
+    int updateToSubmit(HomeworkResult homeworkResult);
+    int updateToCorrect(HomeworkResult homeworkResult);
     int delete(int id);
 }

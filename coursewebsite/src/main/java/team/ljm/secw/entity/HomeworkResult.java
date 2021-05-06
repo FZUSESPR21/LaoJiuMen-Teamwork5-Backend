@@ -11,6 +11,8 @@ public class HomeworkResult {
     private String filePath;
     private int score;
     private String remark;
+    private int homeworkId;
+    private int studentId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -24,6 +26,8 @@ public class HomeworkResult {
                 ", filePath='" + filePath + '\'' +
                 ", score=" + score +
                 ", remark='" + remark + '\'' +
+                ", homeworkId=" + homeworkId +
+                ", studentId=" + studentId +
                 ", submittedAt=" + submittedAt +
                 '}';
     }
@@ -74,5 +78,21 @@ public class HomeworkResult {
 
     public void setSubmittedAt(Date submittedAt) {
         this.submittedAt = submittedAt;
+    }
+
+    public int getHomeworkId() {
+        return homeworkId;
+    }
+
+    public void setHomeworkId(int homeworkId) {
+        this.homeworkId = homeworkId;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 }

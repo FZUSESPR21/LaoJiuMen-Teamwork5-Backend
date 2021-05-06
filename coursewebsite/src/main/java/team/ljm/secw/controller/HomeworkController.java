@@ -6,8 +6,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import team.ljm.secw.entity.Homework;
+import team.ljm.secw.entity.HomeworkResult;
 import team.ljm.secw.entity.Resource;
+import team.ljm.secw.entity.Student;
 import team.ljm.secw.service.IHomeworkService;
+import team.ljm.secw.service.IHomeworkresultService;
+import team.ljm.secw.service.IStudentMgtService;
 import team.ljm.secw.vo.ResponseVO;
 
 import java.util.List;
@@ -18,6 +22,9 @@ public class HomeworkController {
 
     @Autowired
     private IHomeworkService homeworkService;
+
+    @Autowired
+    private IHomeworkresultService homeworkResultService;
 
     //课程作业，教师，全部
     @RequestMapping("/teacher/all")
@@ -40,6 +47,15 @@ public class HomeworkController {
     @ResponseBody
     public ResponseVO addHomework(@RequestBody Homework requestHomework){
         homeworkService.add(requestHomework);
+        requestHomework.setId(requestHomework.getId());
+        List<Student> list = homeworkService.findStudentListByClazzId(requestHomework.getClazzId());
+        // 加入全班同学结果，设成绩为-2
+        HomeworkResult homeworkResultTemp = new HomeworkResult();
+        homeworkResultTemp.setHomeworkId(requestHomework.getId());
+        for (Student student : list) {
+            homeworkResultTemp.setStudentId(student.getId());
+            homeworkResultService.add(homeworkResultTemp);
+        }
         return new ResponseVO("200","success");
     }
 
@@ -47,9 +63,8 @@ public class HomeworkController {
     @RequestMapping("/teacher/update")
     @ResponseBody
     public ResponseVO updateHomework(@RequestBody Homework requestHomework){
-        int rel = homeworkService.modify(requestHomework);
-        ResponseVO response = new ResponseVO("200","success");
-        return response;
+        homeworkService.modify(requestHomework);
+        return new ResponseVO("200","success");
     }
 
     //课程作业，教师学生，按id查

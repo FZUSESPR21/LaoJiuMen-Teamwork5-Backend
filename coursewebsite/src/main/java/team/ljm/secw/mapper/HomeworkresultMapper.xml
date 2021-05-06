@@ -4,23 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.ljm.secw.mapper.HomeworkresultMapper">
     <select id="selectListById" resultType="team.ljm.secw.entity.HomeworkResult">
-        select * from t_homework_result where id in (
-            select result_id from t_stu_hw_rslt where homework_id = #{id}
-            )
+        select id, content, file_path, score, remark, homework_id, student_id, submitted_at from t_homework_result
+        where homework_id = #{id}
     </select>
 
     <select id="selectById" resultType="team.ljm.secw.entity.HomeworkResult">
-        select * from t_homework_result where id = #{id}
+        select id, content, file_path, score, remark, homework_id, student_id, submitted_at from t_homework_result
+        where id = #{id}
     </select>
 
-    <insert id="insert" parameterType="team.ljm.secw.dto.HomeworkresultDTO" keyProperty="id" useGeneratedKeys="true">
-        insert into t_homework_result (content, file_path, submitted_at)
-        values (#{content},#{filePath},#{submittedAt})
+    <select id="selectScore" parameterType="team.ljm.secw.entity.HomeworkResult" resultType="int">
+        select score from t_homework_result where student_id = #{studentId} and homework_id = #{homeworkId}
+    </select>
+
+
+    <insert id="insert" parameterType="team.ljm.secw.entity.HomeworkResult" keyProperty="id" useGeneratedKeys="true">
+        insert into t_homework_result (homework_id, student_id)
+        values (#{homeworkId},#{studentId})
     </insert>
 
-    <update id="update" parameterType="team.ljm.secw.dto.HomeworkresultDTO">
-        update t_homework_result set content = #{content}, file_path = #{filePath},score = #{score},remark = #{remark}
-        where id = #{id}
+    <update id="updateToSubmit" parameterType="team.ljm.secw.entity.HomeworkResult">
+        update t_homework_result set content = #{content}, file_path = #{filePath}, submitted_at = #{submittedAt}
+        where student_id = #{studentId} and homework_id = #{homeworkId}
+    </update>
+
+    <update id="updateToCorrect" parameterType="team.ljm.secw.entity.HomeworkResult">
+        update t_homework_result set score = #{score},remark = #{remark}
+        where student_id = #{studentId} and homework_id = #{homeworkId}
     </update>
 
     <delete id="delete">

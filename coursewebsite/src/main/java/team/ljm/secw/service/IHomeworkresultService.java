@@ -1,7 +1,5 @@
 package team.ljm.secw.service;
 
-import team.ljm.secw.dto.HomeworkresultDTO;
-import team.ljm.secw.entity.Homework;
 import team.ljm.secw.entity.HomeworkResult;
 
 import java.util.List;
@@ -9,8 +7,9 @@ import java.util.List;
 public interface IHomeworkresultService {
     List<HomeworkResult> findListByHwid(int id);
     HomeworkResult findById(int id);
-    int findResultId(String account,int homeworkId);
-    void add(HomeworkresultDTO homeworkresultDTO);
-    int modify(HomeworkresultDTO homeworkresultDTO);
-    int remove(HomeworkresultDTO homeworkresultDTO);
+    int findResultStatus(HomeworkResult homeworkResult);
+    int add(HomeworkResult homeworkResult);
+    int modify(HomeworkResult homeworkResult);
+    int correct(HomeworkResult homeworkResult);
+    int remove(HomeworkResult homeworkResult);
 }

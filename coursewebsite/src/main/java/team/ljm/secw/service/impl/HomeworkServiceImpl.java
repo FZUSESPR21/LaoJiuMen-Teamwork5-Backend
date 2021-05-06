@@ -3,6 +3,7 @@ package team.ljm.secw.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.ljm.secw.entity.Homework;
+import team.ljm.secw.entity.Student;
 import team.ljm.secw.mapper.HomeworkMapper;
 import team.ljm.secw.service.IHomeworkService;
 
@@ -22,6 +23,12 @@ public class HomeworkServiceImpl implements IHomeworkService {
     @Override
     public List<Homework> findAll() {
         List<Homework> list = homeworkMapper.selectList();
+        return list;
+    }
+
+    @Override
+    public List<Student> findStudentListByClazzId(int id) {
+        List<Student> list = homeworkMapper.selectStudentListByClazzId(id);
         return list;
     }
 
