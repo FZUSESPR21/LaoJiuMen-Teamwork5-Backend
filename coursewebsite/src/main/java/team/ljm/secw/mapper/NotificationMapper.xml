@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.ljm.secw.mapper.NotificationMapper">
+
+    <select id="selectListByClazzId" resultType="team.ljm.secw.entity.Notification">
+        select id, notification_name, content, issuer, released_at
+        from t_notification
+        where clazz_id = #{clazzId}
+    </select>
+
+    <select id="selectById" resultType="team.ljm.secw.entity.Notification">
+        select notification_name, content, issuer, released_at
+        from t_notification
+        where id = #{id}
+    </select>
+
+    <insert id="insert">
+        insert into t_notification(notification_name, content, clazz_id, issuer)
+        values(#{notificationName}, #{content}, #{clazzId}, #{issuer})
+    </insert>
+
+    <update id="update">
+        update t_notification
+        set notification_name = #{notificationName}, content = #{content}
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from t_notification
+        where id = #{id}
+    </delete>
+
+</mapper>

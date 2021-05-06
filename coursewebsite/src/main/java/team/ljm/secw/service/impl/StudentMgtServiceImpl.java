@@ -9,6 +9,7 @@ import team.ljm.secw.service.IStudentMgtService;
 import team.ljm.secw.utils.ExcelUtil;
 import team.ljm.secw.vo.ResponseVO;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -49,8 +50,8 @@ public class StudentMgtServiceImpl implements IStudentMgtService {
     }
 
     @Override
-    public List<Student> findStudentListByClazzId(Student student) {
-        return studentMgtMapper.selectListByClazzId(student);
+    public List<Student> findStudentListByClazzId(int clazzId) {
+        return studentMgtMapper.selectListByClazzId(clazzId);
     }
 
     @Override
@@ -67,4 +68,10 @@ public class StudentMgtServiceImpl implements IStudentMgtService {
     public int remove(Student student) {
         return studentMgtMapper.delete(student);
     }
+
+    @Override
+    public int removeList(List<Student> studentList) {
+        return studentMgtMapper.batchDelete(studentList);
+    }
+
 }

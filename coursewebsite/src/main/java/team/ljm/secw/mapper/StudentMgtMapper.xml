@@ -35,4 +35,14 @@
         where id = #{id}
     </delete>
 
+    <delete id="batchDelete" parameterType="java.util.List">
+        delete from t_student
+        where id in
+        <foreach collection="studentList" item="stu_item" open="(" close=")" separator=",">
+            #{stu_item.id}
+        </foreach>
+    </delete>
+
+
+
 </mapper>
