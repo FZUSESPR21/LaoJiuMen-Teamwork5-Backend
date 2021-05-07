@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.ljm.secw.mapper.ScoreMapper">
+
+    <select id="selectScoreListByClazzId" resultType="team.ljm.secw.entity.Student">
+        select account, student_name, total_score, written_score, usual_score
+        from t_student
+        where clazz_id = #{clazzId}
+    </select>
+
+    <select id="selectHomeworkScoreByHomeworkIdAndClazzId" resultType="java.lang.Integer">
+        SELECT r.score
+        FROM t_homework_result AS r LEFT JOIN t_homework AS h ON r.homework_id = h.id
+        WHERE r.homework_id = #{homeworkId} AND h.clazz_id = #{clazzId}
+    </select>
+
+    <select id="selectFinalScoreByClazzId" resultType="java.lang.Integer">
+        select total_score
+        from t_student
+        where clazz_id = #{clazzId}
+    </select>
+
+    <select id="selectHomeworkIdAndTitleListByClazzId" resultType="team.ljm.secw.dto.HomeworkDTO">
+        select id, title
+        from t_homework
+        where clazz_id = #{clazzId}
+    </select>
+
+    <select id="countAbsentNumListOrderByAccount" resultType="java.lang.Integer">
+        SELECT IFNULL(t2.count,0) num
+        FROM t_student AS t1 LEFT JOIN
+             (SELECT r.student_id sid,COUNT(r.student_id) count
+              FROM t_attendance AS a LEFT JOIN t_attendance_result AS r ON a.id = r.attendance_id
+              WHERE r.attended_at IS NULL
+              GROUP BY r.student_id) AS t2 ON t1.id = t2.sid
+        WHERE t1.clazz_id = #{clazzId}
+        ORDER BY t1.account
+    </select>
+
+    <select id="countNotSubmitNumListOrderByAccount" resultType="java.lang.Integer">
+        SELECT IFNULL(t2.count,0) num
+        FROM t_student AS t1 LEFT JOIN(
+            SELECT r.student_id sid,COUNT(r.student_id) count
+            FROM t_homework_result AS r LEFT JOIN t_homework AS h ON r.homework_id = h.id
+            WHERE r.score = -2
+            GROUP BY r.student_id) AS t2 ON t1.id = t2.sid
+        WHERE t1.clazz_id = #{clazzId}
+        ORDER BY t1.account
+    </select>
+
+    <select id="selectHomeworkScoreListOrderByAccountAndStartAt" resultType="java.lang.Integer">
+        SELECT r.score
+        FROM (t_homework_result AS r LEFT JOIN t_student AS s ON r.student_id = s.id) LEFT JOIN t_homework AS h ON r.homework_id = h.id
+        WHERE s.clazz_id = #{clazzId}
+        ORDER BY s.account, h.start_at
+    </select>
+
+    <select id="selectStudentAccountListByClazzId" resultType="java.lang.String">
+        select account
+        from t_student
+        where clazz_id = #{clazzId}
+    </select>
+
+    <update id="batchUpdateScore" parameterType="java.util.List">
+        update t_student
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="total_score =case" suffix="end,">
+                <foreach collection="scoreList" item="item" index="index">
+                    <if test="item.totalScore!=null">
+                        when account=#{item.account} then #{item.totalScore}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="written_score =case" suffix="end,">
+                <foreach collection="scoreList" item="item" index="index">
+                    <if test="item.writtenScore!=null">
+                        when account=#{item.account} then #{item.writtenScore}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="usual_score =case" suffix="end,">
+                <foreach collection="scoreList" item="item" index="index">
+                    <if test="item.usualScore!=null">
+                        when account=#{item.account} then #{item.usualScore}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where account in
+        <foreach collection="scoreList" item="item" open="(" close=")" separator=",">
+            #{item.account}
+        </foreach>
+    </update>
+
+</mapper>
