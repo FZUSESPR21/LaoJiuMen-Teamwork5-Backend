@@ -5,8 +5,8 @@
 
 <mapper namespace="team.ljm.secw.mapper.AttendanceMapper">
 
-    <select id="findAllAttendance" resultType="Attendance" parameterType="StudentVo">
-        select * from t_attendance a where clazz_id=#{student.clazzId}
+    <select id="findAllAttendance" resultType="Attendance" parameterType="Integer">
+        select * from t_attendance a where clazz_id=#{clazzId}
     </select>
     <select id="findResult" parameterType="Integer" resultType="AttendanceResult">
         select * from t_attendance_result where student_id=#{studentid}
@@ -22,7 +22,23 @@
 
     </resultMap>-->
     <insert id="insertStuAttendance" parameterType="AttendanceResult">
-        insert into t_attendance_result(attendance_id, student_id, attended_at) values(#{attendanceId},#{studentId},#{attendedAt})
+        insert into t_attendance_result(attendance_id, student_id) values(#{attendanceId},#{studentId})
     </insert>
+    <update id="updateResult" parameterType="AttendanceResult">
+        update t_attendance_result set attended_at=#{attendedAt} where attendance_id=#{attendanceId} and student_id=#{studentId}
+    </update>
+    <select id="findStuResult" parameterType="Integer" resultType="AttendanceResult">
+        select *
+        from t_attendance_result where attendance_id=#{attendanceId};
+    </select>
+    <select id="findAllStu" parameterType="Integer" resultType="Student">
+        select * from t_student where clazz_id=#{clazzId}
+    </select>
+    <insert id="insertAttendance" parameterType="Attendance" useGeneratedKeys="true" keyProperty="id">
+        insert into t_attendance(attendance_name, start_at, end_at, issuer, clazz_id) values(#{attendanceName},#{startAt},#{endAt},#{issuer},#{clazzId})
+    </insert>
+    <update id="updateEndAt" parameterType="AttendanceResult">
+        update t_attendance set end_at=#{endAt} where id=#{id}
+    </update>
 
 </mapper>

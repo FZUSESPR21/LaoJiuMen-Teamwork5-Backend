@@ -27,4 +27,29 @@ public class AttendanceController {
     public int insert(AttendanceResult attendanceResult){
         return this.attendanceService.insertStuAttendance(attendanceResult);
     }
+    @RequestMapping("/teacherAll")
+    @ResponseBody
+    public List<Attendance> teacherAll(Integer clazzId){
+        return this.attendanceService.findTeacherAttendance(clazzId);
+    }
+    @RequestMapping("/stuUpdate")
+    @ResponseBody
+    public int stuUpdate(AttendanceResult attendanceResult){
+        return this.attendanceService.updateResult(attendanceResult);
+    }
+    @RequestMapping("/stuList")
+    @ResponseBody
+    public List<AttendanceResult> AttendenceList(Integer attendanceId){
+        return attendanceService.findStuResult(attendanceId);
+    }
+    @RequestMapping("/release")
+    @ResponseBody
+    public int release(Attendance attendance){
+        return attendanceService.releaseAttendance(attendance);
+    }
+    @RequestMapping("/updateTime")
+    @ResponseBody
+    public int updateTime(Attendance attendance){
+        return attendanceService.updateEndAt(attendance);
+    }
 }

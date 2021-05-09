@@ -8,7 +8,12 @@ import team.ljm.secw.entity.StudentVo;
 import java.util.List;
 
 public interface AttendanceMapper {
-    public List<Attendance> findAllAttendance(StudentVo studentvo);
+    public List<Attendance> findAllAttendance(Integer clazzId);
     public int insertStuAttendance(AttendanceResult attendanceResult);
     public List<AttendanceResult> findResult(Integer studentid);
+    public int updateResult(AttendanceResult attendanceResult);
+    public List<AttendanceResult> findStuResult(Integer attendanceId);
+    public List<Student> findAllStu(Integer clazzId);
+    public int insertAttendance(Attendance attendance);
+    public int updateEndAt(Attendance attendance);
 }
