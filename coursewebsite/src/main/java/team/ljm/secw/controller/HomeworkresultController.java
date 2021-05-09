@@ -103,6 +103,14 @@ public class HomeworkresultController {
         return new ResponseVO("200","success");
     }
 
+    //学生查看已提交详情
+    @RequestMapping("/student/search")
+    @ResponseBody
+    public ResponseVO selectByHwIdStuId(@RequestBody HomeworkResult requestHomeworkResult){
+        HomeworkResult homeworkResult = homeworkResultService.findResultStu(requestHomeworkResult);
+        return new ResponseVO("200","success",homeworkResult);
+    }
+
     //下载附件
     @RequestMapping(value = "/download")
     public void download(HttpServletRequest request, HttpServletResponse response , @RequestBody HomeworkResult requestHomeworkResult){

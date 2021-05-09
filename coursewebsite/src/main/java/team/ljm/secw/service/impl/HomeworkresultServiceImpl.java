@@ -31,6 +31,11 @@ public class HomeworkresultServiceImpl implements IHomeworkresultService {
     }
 
     @Override
+    public HomeworkResult findResultStu(HomeworkResult homeworkResult) {
+        return homeworkresultMapper.selectByHwIdStId(homeworkResult);
+    }
+
+    @Override
     public int add(HomeworkResult homeworkResult) {
         return homeworkresultMapper.insert(homeworkResult);
     }

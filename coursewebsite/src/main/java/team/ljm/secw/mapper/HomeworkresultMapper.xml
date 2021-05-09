@@ -13,6 +13,10 @@
         where id = #{id}
     </select>
 
+    <select id="selectByHwIdStId" parameterType="team.ljm.secw.entity.HomeworkResult" resultType="team.ljm.secw.entity.HomeworkResult">
+        select * from t_homework_result where student_id = #{studentId} and homework_id = #{homeworkId}
+    </select>
+
     <select id="selectScore" parameterType="team.ljm.secw.entity.HomeworkResult" resultType="int">
         select score from t_homework_result where student_id = #{studentId} and homework_id = #{homeworkId}
     </select>

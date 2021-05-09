@@ -1,5 +1,6 @@
 package team.ljm.secw.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import team.ljm.secw.entity.Resource;
@@ -14,7 +15,7 @@ public interface ResourceMapper {
 
     Resource selectById(int id);
 
-    List<Resource> selectListByClazzId(int id,int type);
+    List<Resource> selectListByClazzId(@Param("id") int id, @Param("type") int type);
 
     int update(Resource resource);
 

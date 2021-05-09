@@ -27,7 +27,7 @@ public class ResourceController {
     @Autowired
     private IResourceService resourceService;
 
-    //课程资源，教师，上传
+    //所有资源，教师，上传
     @RequestMapping("/teacher/upload")
     @ResponseBody
     public ResponseVO upload(@RequestBody Resource requestResource,@RequestBody MultipartFile file, HttpServletRequest request) {
@@ -35,18 +35,18 @@ public class ResourceController {
             byte[] buf = file.getBytes();
             String originalFileName = file.getOriginalFilename();
             String fileUrl = "";
-            /*指定路径
-            if (requestResource.getFilePath() == null)fileUrl = "/upload/" + time + originalFileName;
-            else fileUrl = "/" + requestResource.getFilePath()+ "/" + time + originalFileName;*/
-            //
-            fileUrl = "/WEB-INF/resource/" + requestResource.getTeacherId() +"/" + requestResource.getClazzId() + "/" + originalFileName;
+            if (requestResource.getType()==0)
+                fileUrl = "/WEB-INF/resource/" + requestResource.getTeacherId() +"/" + requestResource.getClazzId() + "/" + originalFileName;
+            else if (requestResource.getType()==1)
+                fileUrl = "/WEB-INF/other/" + requestResource.getTeacherId() +"/" + requestResource.getClazzId() + "/" + originalFileName;
+            else if (requestResource.getType()==2)
+                fileUrl = "/WEB-INF/other/学习计划/" + requestResource.getTeacherId() +"/" + requestResource.getClazzId() + "/" + originalFileName;
             fileUrl = request.getSession().getServletContext().getRealPath(fileUrl);
             //向url地址存储文件
             FileUtil.writeFileToUrl(file, fileUrl);
             requestResource.setResourceName(originalFileName);
             requestResource.setFilePath(fileUrl);
             Date date = new Date();
-            //String dateTime = DateUtils.dateToStrDateTime(date, "yyyy-MM-dd HH:mm:ss");
             requestResource.setUploadedAt(date);
             requestResource.setDownloads(0);
             resourceService.add(requestResource);
@@ -74,7 +74,7 @@ public class ResourceController {
             Date date = new Date();
             requestResource.setUploadedAt(date);
             requestResource.setDownloads(0);
-            requestResource.setType(1);
+            requestResource.setType(2);
             resourceService.modifyOtherResource(requestResource);
         }
         catch(Exception e){
@@ -112,6 +112,14 @@ public class ResourceController {
     @ResponseBody
     public ResponseVO otherFile(@RequestBody int id){
         List<Resource> list = resourceService.findOtherListByClazzId(id);
+        return new ResponseVO("200","success",list);
+    }
+
+    //学习计划，按班级查
+    @RequestMapping("/search_plan")
+    @ResponseBody
+    public ResponseVO planFile(@RequestBody int id){
+        List<Resource> list = resourceService.findPlanListByClazzId(id);
         return new ResponseVO("200","success",list);
     }
 

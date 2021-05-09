@@ -17,7 +17,11 @@ public class FileUtil {
         return String.valueOf(time);
     }
     public static void writeFileToUrl(MultipartFile file, String fileUrl) throws IOException {
-        FileOutputStream fos = new FileOutputStream(new File(fileUrl));
+        File file1 = new File(fileUrl);
+        if (!file1.getParentFile().exists()) {
+            file1.getParentFile().mkdirs();
+        }
+        FileOutputStream fos = new FileOutputStream(file1);
         fos.write(file.getBytes());
         fos.flush();
         fos.close();
