@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 public class Topic {
 
@@ -12,6 +13,16 @@ public class Topic {
     private String title;
     private String content;
     private int commentNum;
+
+    public List<TopicComment> getTopicCommentList() {
+        return topicCommentList;
+    }
+
+    public void setTopicCommentList(List<TopicComment> topicCommentList) {
+        this.topicCommentList = topicCommentList;
+    }
+
+    private List<TopicComment> topicCommentList;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

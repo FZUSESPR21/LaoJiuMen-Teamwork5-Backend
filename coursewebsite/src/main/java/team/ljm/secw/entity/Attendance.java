@@ -18,6 +18,26 @@ public class Attendance {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endAt;
 
+    public Boolean getResult() {
+        return result;
+    }
+
+    public void setResult(Boolean result) {
+        this.result = result;
+    }
+
+    private Boolean result;
+
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
+    }
+
+    private Boolean state;//true代表进行中,反之为结束
     private String issuer;
     private int clazzId;
 
@@ -28,6 +48,8 @@ public class Attendance {
                 ", attendanceName='" + attendanceName + '\'' +
                 ", startAt=" + startAt +
                 ", endAt=" + endAt +
+                ", result=" + result +
+                ", state=" + state +
                 ", issuer='" + issuer + '\'' +
                 ", clazzId=" + clazzId +
                 '}';

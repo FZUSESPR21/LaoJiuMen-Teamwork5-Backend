@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.ljm.secw.mapper.TopicMapper">
+
+    <select id="findTopicById" parameterType="Integer" resultType="Topic">
+        select * from t_topic where id = #{id}
+    </select>
+    <select id="findTopicByTitle" parameterType="String" resultType="Topic">
+        select * from t_topic where title=#{title}
+    </select>
+    <select id="findTopicByAccount" parameterType="String" resultType="Topic">
+        select * from t_topic where account=#{account}
+    </select>
+    <select id="findAllTopic" resultType="Topic">
+        select * from t_topic
+    </select>
+    <select id="findTopicComment" resultMap="topicRelatedComment">
+        select top.*,comment.id as c_id,comment.account as c_account,comment.content as c_content,comment.released_at as c_released_at from t_topic top,t_topic_comment comment
+        where top.id=comment.topic_id and top.id=#{id}
+    </select>
+    <resultMap id="topicRelatedComment" type="Topic">
+        <id property="id" column="id"/>
+        <result property="account" column="account"/>
+        <result column="title" property="title"/>
+        <result property="content" column="content"/>
+        <result column="conmment_num" property="commentNum"/>
+        <result property="releasedAt" column="released_at"/>
+        <collection property="topicCommentList" ofType="TopicComment">
+             <id property="id" column="c_id"/>
+             <result column="topic_id" property="topicId"/>
+            <result column="c_account" property="account"/>
+            <result column="c_content" property="content"/>
+            <result column="c_released_at" property="releasedAt"/>
+        </collection>
+    </resultMap>
+    <insert id="insertTopic" parameterType="Topic" keyProperty="id" useGeneratedKeys="true">
+        insert into t_topic(account,title,content,comment_num,released_at) values(#{account},#{title},#{content},#{commentNum},#{releasedAt})
+    </insert>
+    <delete id="deleteTopic" parameterType="Integer">
+        delete  from t_topic where id=#{id}
+    </delete>
+
+</mapper>

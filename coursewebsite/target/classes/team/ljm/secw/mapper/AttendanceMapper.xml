@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.ljm.secw.mapper.AttendanceMapper">
+
+    <select id="findAllAttendance" resultType="Attendance" parameterType="StudentVo">
+        select * from t_attendance a where clazz_id=#{student.clazzId}
+    </select>
+    <select id="findResult" parameterType="Integer" resultType="AttendanceResult">
+        select * from t_attendance_result where student_id=#{studentid}
+    </select>
+    <!--<resultMap id="AttendanceResult" type="Attendance">
+        <id property="id" column="id"/>
+        <result property="attendanceName" column="attendance_name"/>
+        <result property="startAt" column="start_at"/>
+        <result property="endAt" column="end_at"/>
+        <association property="attendanceResult" javaType="AttendanceResult">
+            <result property="attendedAt" column="attended_at"/>
+        </association>
+
+    </resultMap>-->
+    <insert id="insertStuAttendance" parameterType="AttendanceResult">
+        insert into t_attendance_result(attendance_id, student_id, attended_at) values(#{attendanceId},#{studentId},#{attendedAt})
+    </insert>
+
+</mapper>
