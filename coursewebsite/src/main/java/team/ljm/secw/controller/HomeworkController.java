@@ -14,6 +14,8 @@ import team.ljm.secw.service.IHomeworkresultService;
 import team.ljm.secw.service.IStudentMgtService;
 import team.ljm.secw.vo.ResponseVO;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -93,4 +95,17 @@ public class HomeworkController {
         List<Homework> list = homeworkService.findListByClazzId(clazzId);
         return new ResponseVO("200", "success", list);
     }
+
+    //课程作业，学生，按班级查，开始时间要在当前时间之后
+    @RequestMapping("/student/all")
+    @ResponseBody
+    public ResponseVO classHomeworkNow(@RequestBody int clazzId) {
+        List<Homework> list = new ArrayList<>();
+        Date date = new Date();
+        for (Homework homework:homeworkService.findListByClazzId(clazzId)){
+            if (homework.getStartAt().before(date))list.add(homework);
+        }
+        return new ResponseVO("200", "success", list);
+    }
+
 }
