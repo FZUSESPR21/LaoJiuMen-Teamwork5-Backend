@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import team.ljm.secw.entity.Homework;
 import team.ljm.secw.entity.HomeworkResult;
+import team.ljm.secw.entity.Student;
 import team.ljm.secw.service.IHomeworkresultService;
 import team.ljm.secw.utils.FileUtil;
 import team.ljm.secw.vo.ResponseVO;
@@ -141,6 +142,14 @@ public class HomeworkresultController {
             //return new ResponseVO("500","error");
         }
         //return new ResponseVO("200","success");
+    }
+
+    //学生查看已提交详情
+    @RequestMapping("/student/homework_result/stu_info")
+    @ResponseBody
+    public ResponseVO selectStuById(@RequestParam("id") int id){
+        Student student = homeworkResultService.findStuById(id);
+        return new ResponseVO("200","success",student);
     }
 
 }

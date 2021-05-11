@@ -1,6 +1,7 @@
 package team.ljm.secw.service;
 
 import team.ljm.secw.entity.HomeworkResult;
+import team.ljm.secw.entity.Student;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface IHomeworkresultService {
     int modify(HomeworkResult homeworkResult);
     int correct(HomeworkResult homeworkResult);
     int remove(HomeworkResult homeworkResult);
+    Student findStuById(int id);
 }

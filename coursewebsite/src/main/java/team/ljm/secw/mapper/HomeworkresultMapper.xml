@@ -41,4 +41,7 @@
         delete from t_homework_result where id = #{id}
     </delete>
 
+    <select id="selectStuInfo" resultType="team.ljm.secw.entity.Student">
+        select account,student_name from t_student where id = #{id}
+    </select>
 </mapper>
