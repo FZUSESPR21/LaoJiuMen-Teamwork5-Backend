@@ -1,9 +1,13 @@
 package team.ljm.secw.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.poi.ss.usermodel.PaperSize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import team.ljm.secw.entity.Resource;
@@ -21,14 +25,13 @@ import java.io.IOException;
 
 
 @Controller
-@RequestMapping("/res")
 public class ResourceController {
 
     @Autowired
     private IResourceService resourceService;
 
     //所有资源，教师，上传
-    @RequestMapping("/teacher/upload")
+    @RequestMapping("/teacher/resource/upload")
     @ResponseBody
     public ResponseVO upload(@RequestBody Resource requestResource,@RequestBody MultipartFile file, HttpServletRequest request) {
         try {
@@ -58,7 +61,7 @@ public class ResourceController {
     }
 
     //学习计划，教师，更新
-    @RequestMapping("/teacher/update_other")
+    @RequestMapping("/teacher/resource/update_other")
     @ResponseBody
     public ResponseVO submitOther(@RequestBody Resource requestResource, @RequestBody MultipartFile file, HttpServletRequest request) {
         try {
@@ -84,7 +87,7 @@ public class ResourceController {
     }
 
     //课程资源，教师，全部
-    @RequestMapping("/teacher/real_all")
+    @RequestMapping("/teacher/resource/real_all")
     @ResponseBody
     public ResponseVO allFile(){
         List<Resource> list = resourceService.findAll();
@@ -92,39 +95,51 @@ public class ResourceController {
     }
 
     //课程资源，教师按班级查
-    @RequestMapping("/teacher/list_search")
+    @RequestMapping("/teacher/resource/all")
     @ResponseBody
-    public ResponseVO searchFileByClazzId(@RequestBody int id){
-        List<Resource> list = resourceService.findListByClazzId(id);
-        return new ResponseVO("200","success",list);
+    public ResponseVO searchFileByClazzId(@RequestParam("clazzId") int clazzId,
+                                          @RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
+        List<Resource> list = resourceService.findListByClazzId(clazzId);
+        PageInfo<Resource> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200","success",pageInfo);
     }
 
     //课程资源，学生按班级查
-    @RequestMapping("/student/all")
+    @RequestMapping("/student/resource/all")
     @ResponseBody
-    public ResponseVO classFile(@RequestBody int id){
-        List<Resource> list = resourceService.findListByClazzId(id);
-        return new ResponseVO("200","success",list);
+    public ResponseVO classFile(@RequestParam("clazzId") int clazzId,
+                                @RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
+        List<Resource> list = resourceService.findListByClazzId(clazzId);
+        PageInfo<Resource> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200","success",pageInfo);
     }
 
     //课程其他资源，按班级查
-    @RequestMapping("/search_other")
+    @RequestMapping("/resource/other")
     @ResponseBody
-    public ResponseVO otherFile(@RequestBody int id){
-        List<Resource> list = resourceService.findOtherListByClazzId(id);
-        return new ResponseVO("200","success",list);
+    public ResponseVO otherFile(@RequestParam("clazzId") int clazzId,
+                                @RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
+        List<Resource> list = resourceService.findOtherListByClazzId(clazzId);
+        PageInfo<Resource> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200","success",pageInfo);
     }
 
     //学习计划，按班级查
-    @RequestMapping("/search_plan")
+    @RequestMapping("/resource/plan")
     @ResponseBody
-    public ResponseVO planFile(@RequestBody int id){
-        List<Resource> list = resourceService.findPlanListByClazzId(id);
-        return new ResponseVO("200","success",list);
+    public ResponseVO planFile(@RequestParam("clazzId") int clazzId,
+                               @RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
+        List<Resource> list = resourceService.findPlanListByClazzId(clazzId);
+        PageInfo<Resource> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200","success",pageInfo);
     }
 
     //课程资源，按单个id查
-    @RequestMapping("/search")
+    @RequestMapping("/resource/search")
     @ResponseBody
     public ResponseVO searchById(@RequestBody Resource requestResource){
         int id = requestResource.getId();
@@ -133,7 +148,7 @@ public class ResourceController {
     }
 
     //课程资源，教师，删除
-    @RequestMapping("/teacher/delete")
+    @RequestMapping("/teacher/resource/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody Resource requestResource){
         int id = requestResource.getId();
@@ -142,7 +157,7 @@ public class ResourceController {
     }
 
     //所有资源，下载
-    @RequestMapping(value = "/download")
+    @RequestMapping(value = "/resource/download")
     public void download(HttpServletRequest request, HttpServletResponse response ,@RequestBody Resource requestResource){
         try {
             String filePath =  request.getSession().getServletContext().getRealPath(requestResource.getFilePath());

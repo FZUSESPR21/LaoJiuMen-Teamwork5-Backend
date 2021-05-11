@@ -1,9 +1,13 @@
 package team.ljm.secw.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import team.ljm.secw.entity.Homework;
 import team.ljm.secw.entity.HomeworkResult;
@@ -19,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/homework")
 public class HomeworkController {
 
     @Autowired
@@ -28,24 +31,29 @@ public class HomeworkController {
     @Autowired
     private IHomeworkresultService homeworkResultService;
 
-    //课程作业，教师，全部
-    @RequestMapping("/teacher/all")
+    //课程作业，教师，全部,测试用
+    @RequestMapping("/teacher/homework/real_all")
     @ResponseBody
-    public ResponseVO allHomework(){
+    public ResponseVO allHomework(@RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
         List<Homework> list = homeworkService.findAll();
-        return new ResponseVO("200","success",list);
+        PageInfo<Homework> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200", "success", pageInfo);
     }
 
     //课程作业，教师，按班级查
-    @RequestMapping("/teacher/list_search")
+    @RequestMapping("/teacher/homework/all")
     @ResponseBody
-    public ResponseVO myClassHomework(@RequestBody int clazzId) {
+    public ResponseVO myClassHomework(@RequestParam("clazzId")  int clazzId,
+                                      @RequestParam(value = "pn",defaultValue = "1") int pn) {
+        PageHelper.startPage(pn,5);
         List<Homework> list = homeworkService.findListByClazzId(clazzId);
-        return new ResponseVO("200", "success", list);
+        PageInfo<Homework> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200", "success", pageInfo);
     }
 
     //课程作业，教师，发布新作业
-    @RequestMapping("/teacher/add")
+    @RequestMapping("/teacher/homework/add")
     @ResponseBody
     public ResponseVO addHomework(@RequestBody Homework requestHomework){
         homeworkService.add(requestHomework);
@@ -62,7 +70,7 @@ public class HomeworkController {
     }
 
     //课程作业，教师，修改作业
-    @RequestMapping("/teacher/update")
+    @RequestMapping("/teacher/homework/update")
     @ResponseBody
     public ResponseVO updateHomework(@RequestBody Homework requestHomework){
         homeworkService.modify(requestHomework);
@@ -70,7 +78,7 @@ public class HomeworkController {
     }
 
     //课程作业，教师学生，按id查
-    @RequestMapping("/search")
+    @RequestMapping("/homework/search")
     @ResponseBody
     public ResponseVO searchById(@RequestBody Homework requestHomework){
         int id = requestHomework.getId();
@@ -79,7 +87,7 @@ public class HomeworkController {
     }
 
     //课程作业，教师，删除
-    @RequestMapping("/teacher/delete")
+    @RequestMapping("/teacher/homework/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody Homework requestHomework){
         int id = requestHomework.getId();
@@ -88,24 +96,30 @@ public class HomeworkController {
         return response;
     }
 
-    //课程作业，学生，按班级查
-    @RequestMapping("/student/all")
+    //课程作业，学生，按班级查,测试用
+    @RequestMapping("/student/homework/real_all")
     @ResponseBody
-    public ResponseVO classHomework(@RequestBody int clazzId) {
+    public ResponseVO classHomework(@RequestParam("clazzId") int clazzId,
+                                    @RequestParam(value = "pn",defaultValue = "1") int pn) {
+        PageHelper.startPage(pn,5);
         List<Homework> list = homeworkService.findListByClazzId(clazzId);
-        return new ResponseVO("200", "success", list);
+        PageInfo<Homework> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200", "success", pageInfo);
     }
 
     //课程作业，学生，按班级查，开始时间要在当前时间之后
-    @RequestMapping("/student/all")
+    @RequestMapping("/student/homework/all")
     @ResponseBody
-    public ResponseVO classHomeworkNow(@RequestBody int clazzId) {
+    public ResponseVO classHomeworkNow(@RequestParam("clazzId") int clazzId,
+                                       @RequestParam(value = "pn",defaultValue = "1") int pn) {
+        PageHelper.startPage(pn,5);
         List<Homework> list = new ArrayList<>();
         Date date = new Date();
         for (Homework homework:homeworkService.findListByClazzId(clazzId)){
             if (homework.getStartAt().before(date))list.add(homework);
         }
-        return new ResponseVO("200", "success", list);
+        PageInfo<Homework> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200", "success", pageInfo);
     }
 
 }
