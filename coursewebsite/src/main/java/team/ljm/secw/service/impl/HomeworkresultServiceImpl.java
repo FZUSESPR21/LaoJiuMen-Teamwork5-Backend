@@ -2,6 +2,7 @@ package team.ljm.secw.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team.ljm.secw.dto.HomeworkResultDTO;
 import team.ljm.secw.entity.Homework;
 import team.ljm.secw.entity.HomeworkResult;
 import team.ljm.secw.entity.Student;
@@ -23,6 +24,12 @@ public class HomeworkresultServiceImpl implements IHomeworkresultService {
     }
 
     @Override
+    public List<HomeworkResultDTO> findInfoListById(int id) {
+        List<HomeworkResultDTO> list = homeworkresultMapper.selectInfoListById(id);
+        return list;
+    }
+
+    @Override
     public HomeworkResult findById(int id) {
         return homeworkresultMapper.selectById(id);
     }
@@ -30,6 +37,24 @@ public class HomeworkresultServiceImpl implements IHomeworkresultService {
     @Override
     public Student findStuById(int id) {
         return homeworkresultMapper.selectStuInfo(id);
+    }
+
+    @Override
+    public List<HomeworkResultDTO> findNotSub (int id){
+        List<HomeworkResultDTO> list = homeworkresultMapper.selectByIdStatus(id,-2);
+        return list;
+    }
+
+    @Override
+    public List<HomeworkResultDTO> findNotCor(int id) {
+        List<HomeworkResultDTO> list = homeworkresultMapper.selectByIdStatus(id,-1);
+        return list;
+    }
+
+    @Override
+    public List<HomeworkResultDTO> findCor(int id) {
+        List<HomeworkResultDTO> list = homeworkresultMapper.selectByIdScore(id,0);
+        return list;
     }
 
     @Override

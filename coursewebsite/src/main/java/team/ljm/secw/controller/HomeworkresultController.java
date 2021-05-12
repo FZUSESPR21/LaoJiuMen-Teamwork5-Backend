@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import team.ljm.secw.dto.HomeworkResultDTO;
 import team.ljm.secw.entity.Homework;
 import team.ljm.secw.entity.HomeworkResult;
 import team.ljm.secw.entity.Student;
@@ -40,6 +41,50 @@ public class HomeworkresultController {
         PageHelper.startPage(pn,5);
         List<HomeworkResult> list = homeworkResultService.findListByHwid(id);
         PageInfo<HomeworkResult> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200", "success", pageInfo);
+    }
+
+    //根据作业id获取提交情况
+    @RequestMapping("/teacher/homework_result/all_sub")
+    @ResponseBody
+    public ResponseVO selectInfoByHwId(@RequestParam("id")  int id,
+                                   @RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
+        List<HomeworkResultDTO> list = homeworkResultService.findInfoListById(id);
+        PageInfo<HomeworkResultDTO> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200", "success", pageInfo);
+    }
+
+    //根据作业id获取未提交列表
+    @RequestMapping("/teacher/homework_result/not_sub")
+    @ResponseBody
+    public ResponseVO selectNoSub(@RequestParam("id")  int id,
+                                   @RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
+        List<HomeworkResultDTO> list = homeworkResultService.findNotSub(id);
+        PageInfo<HomeworkResultDTO> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200", "success", pageInfo);
+    }
+
+    //根据作业id获取未批改列表
+    @RequestMapping("/teacher/homework_result/not_cor")
+    @ResponseBody
+    public ResponseVO selectNoCor(@RequestParam("id")  int id,
+                                  @RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
+        List<HomeworkResultDTO> list = homeworkResultService.findNotCor(id);
+        PageInfo<HomeworkResultDTO> pageInfo = new PageInfo<>(list,5);
+        return new ResponseVO("200", "success", pageInfo);
+    }
+
+    //根据作业id获取已经批改列表
+    @RequestMapping("/teacher/homework_result/cor")
+    @ResponseBody
+    public ResponseVO selectCor(@RequestParam("id")  int id,
+                                  @RequestParam(value = "pn",defaultValue = "1") int pn){
+        PageHelper.startPage(pn,5);
+        List<HomeworkResultDTO> list = homeworkResultService.findCor(id);
+        PageInfo<HomeworkResultDTO> pageInfo = new PageInfo<>(list,5);
         return new ResponseVO("200", "success", pageInfo);
     }
 

@@ -1,5 +1,7 @@
 package team.ljm.secw.mapper;
 
+import org.apache.ibatis.annotations.Param;
+import team.ljm.secw.dto.HomeworkResultDTO;
 import team.ljm.secw.entity.HomeworkResult;
 import team.ljm.secw.entity.Student;
 
@@ -9,6 +11,9 @@ public interface HomeworkresultMapper {
     List<HomeworkResult> selectListById(int id);
     HomeworkResult selectById(int id);
     HomeworkResult selectByHwIdStId(HomeworkResult homeworkResult);
+    List<HomeworkResultDTO> selectInfoListById(int id);
+    List<HomeworkResultDTO> selectByIdStatus(@Param("id") int id,@Param("score")int score);
+    List<HomeworkResultDTO> selectByIdScore(@Param("id") int id,@Param("score")int score);
     Student selectStuInfo(int id);
     //获取成绩，需要学生id与作业id，同时用于提交状态判断
     int selectScore (HomeworkResult homeworkResult);
