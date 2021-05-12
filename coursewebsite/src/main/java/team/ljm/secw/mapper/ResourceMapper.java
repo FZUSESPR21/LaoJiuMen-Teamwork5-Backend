@@ -15,7 +15,11 @@ public interface ResourceMapper {
 
     Resource selectById(int id);
 
+    Resource selectByName(Resource resource);
+
     List<Resource> selectListByClazzId(@Param("id") int id, @Param("type") int type);
+
+    int updateDownload(int id);
 
     int update(Resource resource);
 

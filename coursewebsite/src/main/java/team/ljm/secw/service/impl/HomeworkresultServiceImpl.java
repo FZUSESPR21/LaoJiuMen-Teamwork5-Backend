@@ -30,6 +30,11 @@ public class HomeworkresultServiceImpl implements IHomeworkresultService {
     }
 
     @Override
+    public List<HomeworkResultDTO> findListByStuId(int id) {
+        return homeworkresultMapper.selectListByStuId(id);
+    }
+
+    @Override
     public HomeworkResult findById(int id) {
         return homeworkresultMapper.selectById(id);
     }

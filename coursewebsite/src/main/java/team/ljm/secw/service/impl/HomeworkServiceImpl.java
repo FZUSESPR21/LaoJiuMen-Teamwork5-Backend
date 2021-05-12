@@ -34,7 +34,7 @@ public class HomeworkServiceImpl implements IHomeworkService {
 
     @Override
     public List<Homework> findListByClazzId(int id) {
-        List<Homework> list = homeworkMapper.selectList();
+        List<Homework> list = homeworkMapper.selectListByClazzId(id);
         return list;
     }
 

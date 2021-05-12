@@ -51,8 +51,18 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
-    public int modifyOtherResource(Resource resource) {
+    public Resource findByName(Resource resourceName) {
+        return resourceMapper.selectByName(resourceName);
+    }
+
+    @Override
+    public int modifyResource(Resource resource) {
         return resourceMapper.update(resource);
+    }
+
+    @Override
+    public int modifyDownload(int id) {
+        return resourceMapper.updateDownload(id);
     }
 
     @Override

@@ -12,6 +12,8 @@ public interface IResourceService {
     List<Resource> findOtherListByClazzId(int id);
     List<Resource> findPlanListByClazzId(int id);
     Resource findById(int id);
-    int modifyOtherResource (Resource resource);
+    Resource findByName(Resource resourceName);
+    int modifyResource (Resource resource);
+    int modifyDownload(int id);
     int remove(int id);
 }

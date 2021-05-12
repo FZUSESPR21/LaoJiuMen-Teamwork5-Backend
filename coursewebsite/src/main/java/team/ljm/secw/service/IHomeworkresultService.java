@@ -9,6 +9,7 @@ import java.util.List;
 public interface IHomeworkresultService {
     List<HomeworkResult> findListByHwid(int id);
     List<HomeworkResultDTO> findInfoListById(int id);
+    List<HomeworkResultDTO> findListByStuId(int id);
     HomeworkResult findById(int id);
     List<HomeworkResultDTO> findNotSub (int id);//未提交
     List<HomeworkResultDTO> findNotCor (int id);//未批改

@@ -18,6 +18,11 @@
         where id = #{id}
     </select>
 
+    <select id="selectByName" parameterType="team.ljm.secw.entity.Resource" resultType="team.ljm.secw.entity.Resource">
+        select id, resource_name, type, downloads, file_path, teacher_id, clazz_id, uploaded_at from t_resource
+        where resource_name = #{resourceName} and type = #{type} and teacher_id = #{teacherId} and clazz_id = #{clazzId}
+    </select>
+
     <insert id="insert" parameterType="team.ljm.secw.entity.Resource">
         insert into t_resource (resource_name,type,downloads,file_path,teacher_id,clazz_id)
         values (#{resourceName},#{type},#{downloads},#{filePath},#{teacherId},#{clazzId})
@@ -28,8 +33,11 @@
     </delete>
 
     <update id="update" parameterType="team.ljm.secw.entity.Resource">
-        update t_resource set resource_name = #{resourceName},downloads = #{downloads},file_path = #{filePath},
-                              teacher_id = #{teacherId},clazz_id = #{clazzId}
+        update t_resource set resource_name = #{resourceName},downloads = #{downloads},file_path = #{filePath},uploaded_at = #{uploadedAt}
         where id = #{id}
+    </update>
+
+    <update id="updateDownload">
+        update t_resource set downloads = downloads + 1 where id = #{id}
     </update>
 </mapper>

@@ -2,6 +2,7 @@ package team.ljm.secw.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -15,13 +16,16 @@ public class HomeworkResultDTO {
     private int studentId;
     private String account;
     private String studentName;
+    private String title;
+    private MultipartFile file;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date submittedAt;
+
     @Override
     public String toString() {
-        return "HomewResultDTO{" +
+        return "HomeworkResultDTO{" +
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", filePath='" + filePath + '\'' +
@@ -30,7 +34,9 @@ public class HomeworkResultDTO {
                 ", homeworkId=" + homeworkId +
                 ", studentId=" + studentId +
                 ", account='" + account + '\'' +
-                ", stuName='" + studentName + '\'' +
+                ", studentName='" + studentName + '\'' +
+                ", title='" + title + '\'' +
+                ", file=" + file +
                 ", submittedAt=" + submittedAt +
                 '}';
     }
@@ -107,11 +113,27 @@ public class HomeworkResultDTO {
         this.studentName = stuName;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Date getSubmittedAt() {
         return submittedAt;
     }
 
     public void setSubmittedAt(Date submittedAt) {
         this.submittedAt = submittedAt;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }

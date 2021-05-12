@@ -12,6 +12,7 @@ public interface HomeworkresultMapper {
     HomeworkResult selectById(int id);
     HomeworkResult selectByHwIdStId(HomeworkResult homeworkResult);
     List<HomeworkResultDTO> selectInfoListById(int id);
+    List<HomeworkResultDTO> selectListByStuId(int id);
     List<HomeworkResultDTO> selectByIdStatus(@Param("id") int id,@Param("score")int score);
     List<HomeworkResultDTO> selectByIdScore(@Param("id") int id,@Param("score")int score);
     Student selectStuInfo(int id);
