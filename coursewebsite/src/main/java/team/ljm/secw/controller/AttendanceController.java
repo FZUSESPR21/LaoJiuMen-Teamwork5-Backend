@@ -14,6 +14,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/attendance")
+/**
+ * /all
+ */
 public class AttendanceController {
     @Autowired
     private AttendanceService attendanceService;

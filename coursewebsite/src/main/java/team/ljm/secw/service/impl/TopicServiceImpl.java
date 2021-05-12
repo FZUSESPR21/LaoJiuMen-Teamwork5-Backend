@@ -1,5 +1,6 @@
 package team.ljm.secw.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,22 +15,26 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     private TopicMapper topicMapper;
     @Override
-    public List<Topic> findTopicByTitle(String title) {
+    public List<Topic> findTopicByTitle(String title,Integer currentPage) {
+        PageHelper.startPage(currentPage, 10);
          return this.topicMapper.findTopicByTitle(title);
     }
 
     @Override
-    public List<Topic> findTopicByAccount(String account) {
+    public List<Topic> findTopicByAccount(String account,Integer currentPage) {
+        PageHelper.startPage(currentPage, 10);
         return this.topicMapper.findTopicByAccount(account);
     }
 
     @Override
-    public List<Topic> findAllTopic() {
+    public List<Topic> findAllTopic(Integer currentPage) {
+        PageHelper.startPage(currentPage, 10);
         return this.topicMapper.findAllTopic();
     }
 
     @Override
-    public Topic findTopicComment(Integer id) {
+    public Topic findTopicComment(Integer id,Integer currentPage) {
+        PageHelper.startPage(currentPage, 10);
         return this.topicMapper.findTopicComment(id);
     }
 
