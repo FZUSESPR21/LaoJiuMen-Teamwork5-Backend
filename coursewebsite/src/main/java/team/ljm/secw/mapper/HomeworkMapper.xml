@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.ljm.secw.mapper.HomeworkMapper">
+
+    <insert id="insert" parameterType="team.ljm.secw.entity.Homework" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        insert into t_homework (clazz_id, title, content, start_at, end_at)
+        values (#{clazzId},#{title},#{content},#{startAt},#{endAt})
+    </insert>
+
+    <select id="selectList" resultType="team.ljm.secw.entity.Homework">
+        select id, clazz_id, title, content, start_at, end_at from t_homework
+    </select>
+
+    <select id="selectListByClazzId" resultType="team.ljm.secw.entity.Homework">
+        select id, clazz_id, title, content, start_at, end_at from t_homework where clazz_id = #{id}
+    </select>
+
+    <select id="selectStudentListByClazzId" resultType="team.ljm.secw.entity.Student">
+        select id from t_student where clazz_id = #{id}
+    </select>
+
+    <select id="selectById" parameterType="int" resultType="team.ljm.secw.entity.Homework">
+        select id, clazz_id, title, content, start_at, end_at from t_homework where id = #{id}
+    </select>
+
+    <update id="update" parameterType="team.ljm.secw.entity.Homework">
+        update t_homework set
+        clazz_id = #{clazzId},title = #{title},content = #{content},start_at = #{startAt},end_at = #{endAt} where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_homework where id = #{id}
+    </delete>
+</mapper>

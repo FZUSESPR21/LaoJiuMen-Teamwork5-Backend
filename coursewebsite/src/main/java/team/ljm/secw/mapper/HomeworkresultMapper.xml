@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.ljm.secw.mapper.HomeworkresultMapper">
+    <select id="selectListById" resultType="team.ljm.secw.entity.HomeworkResult">
+        select id, content, file_path, score, remark, homework_id, student_id, submitted_at from t_homework_result
+        where homework_id = #{id}
+    </select>
+
+    <select id="selectInfoListById" resultType="team.ljm.secw.dto.HomeworkResultDTO">
+        select t_homework_result.id, t_homework_result.content, t_homework_result.file_path, t_homework_result.score, t_homework_result.remark,
+               t_homework_result.homework_id, t_homework_result.student_id, t_homework_result.submitted_at,t_student.account,t_student.student_name from t_homework_result
+            inner join t_student on t_homework_result.student_id = t_student.id
+        where homework_id = #{id} order by t_homework_result.score
+    </select>
+
+    <select id="selectById" resultType="team.ljm.secw.entity.HomeworkResult">
+        select id, content, file_path, score, remark, homework_id, student_id, submitted_at from t_homework_result
+        where id = #{id}
+    </select>
+
+    <select id="selectByIdStatus" resultType="team.ljm.secw.dto.HomeworkResultDTO">
+        select t_homework_result.id, t_homework_result.content, t_homework_result.file_path, t_homework_result.score, t_homework_result.remark,
+               t_homework_result.homework_id, t_homework_result.student_id, t_homework_result.submitted_at,t_student.account,t_student.student_name from t_homework_result
+            inner join t_student on t_homework_result.student_id = t_student.id
+        where homework_id = #{id} and score = #{score}
+    </select>
+
+    <select id="selectByIdScore" resultType="team.ljm.secw.dto.HomeworkResultDTO">
+        select t_homework_result.id, t_homework_result.content, t_homework_result.file_path, t_homework_result.score, t_homework_result.remark,
+               t_homework_result.homework_id, t_homework_result.student_id, t_homework_result.submitted_at,t_student.account,t_student.student_name from t_homework_result
+            inner join t_student on t_homework_result.student_id = t_student.id
+        where homework_id = #{id} and score >= #{score}
+    </select>
+
+    <select id="selectListByStuId" resultType="team.ljm.secw.dto.HomeworkResultDTO">
+        select t_homework_result.id, t_homework_result.content, t_homework_result.file_path, t_homework_result.score, t_homework_result.remark,
+               t_homework_result.homework_id, t_homework_result.student_id, t_homework_result.submitted_at,t_homework.title from t_homework_result
+              inner join t_homework on t_homework_result.homework_id = t_homework.id
+        where student_id = #{id} and score >= -1
+    </select>
+
+    <select id="selectByHwIdStId" parameterType="team.ljm.secw.entity.HomeworkResult" resultType="team.ljm.secw.entity.HomeworkResult">
+        select id, content, file_path, score, remark, homework_id, student_id, submitted_at from t_homework_result
+        where student_id = #{studentId} and homework_id = #{homeworkId}
+    </select>
+
+    <select id="selectScore" parameterType="team.ljm.secw.entity.HomeworkResult" resultType="Integer">
+        select score from t_homework_result where student_id = #{studentId} and homework_id = #{homeworkId}
+    </select>
+
+
+    <insert id="insert" parameterType="team.ljm.secw.entity.HomeworkResult" keyProperty="id" useGeneratedKeys="true">
+        insert into t_homework_result (homework_id, student_id)
+        values (#{homeworkId},#{studentId})
+    </insert>
+
+    <update id="updateToSubmit" parameterType="team.ljm.secw.entity.HomeworkResult">
+        update t_homework_result set content = #{content}, file_path = #{filePath}, submitted_at = #{submittedAt}
+        where student_id = #{studentId} and homework_id = #{homeworkId}
+    </update>
+
+    <update id="updateToCorrect" parameterType="team.ljm.secw.entity.HomeworkResult">
+        update t_homework_result set score = #{score},remark = #{remark}
+        where id = #{id}
+     </update>
+
+    <delete id="delete">
+        delete from t_homework_result where id = #{id}
+    </delete>
+
+    <select id="selectStuInfo" resultType="team.ljm.secw.entity.Student">
+        select account,student_name from t_student where id = #{id}
+    </select>
+</mapper>

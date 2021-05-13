@@ -1,20 +1,23 @@
-package team.ljm.secw.entity;
+package team.ljm.secw.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
-public class HomeworkResult {
+public class HomeworkResultDTO {
     private int id;
-    private int homeworkId;
-    private int studentId;
     private String content;
     private String filePath;
     private int score;
     private String remark;
     private int homeworkId;
     private int studentId;
+    private String account;
+    private String studentName;
+    private String title;
+    private MultipartFile file;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -22,34 +25,20 @@ public class HomeworkResult {
 
     @Override
     public String toString() {
-        return "HomeworkResult{" +
+        return "HomeworkResultDTO{" +
                 "id=" + id +
-                ", homeworkId=" + homeworkId +
-                ", studentId=" + studentId +
                 ", content='" + content + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", score=" + score +
                 ", remark='" + remark + '\'' +
                 ", homeworkId=" + homeworkId +
                 ", studentId=" + studentId +
+                ", account='" + account + '\'' +
+                ", studentName='" + studentName + '\'' +
+                ", title='" + title + '\'' +
+                ", file=" + file +
                 ", submittedAt=" + submittedAt +
                 '}';
-    }
-
-    public int getHomeworkId() {
-        return homeworkId;
-    }
-
-    public void setHomeworkId(int homeworkId) {
-        this.homeworkId = homeworkId;
-    }
-
-    public int getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
     }
 
     public int getId() {
@@ -92,14 +81,6 @@ public class HomeworkResult {
         this.remark = remark;
     }
 
-    public Date getSubmittedAt() {
-        return submittedAt;
-    }
-
-    public void setSubmittedAt(Date submittedAt) {
-        this.submittedAt = submittedAt;
-    }
-
     public int getHomeworkId() {
         return homeworkId;
     }
@@ -114,5 +95,45 @@ public class HomeworkResult {
 
     public void setStudentId(int studentId) {
         this.studentId = studentId;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String stuName) {
+        this.studentName = stuName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(Date submittedAt) {
+        this.submittedAt = submittedAt;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }
