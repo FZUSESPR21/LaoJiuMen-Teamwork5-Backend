@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 import team.ljm.secw.dto.HomeworkDTO;
 import team.ljm.secw.dto.ScoreDTO;
+import team.ljm.secw.entity.Clazz;
 import team.ljm.secw.entity.Student;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface ScoreMapper {
     List<String> selectStudentAccountListByClazzId(int clazzId);
 
     int batchUpdateScore(@Param("scoreList") List<ScoreDTO> scoreList);
+
+    int updateScore(ScoreDTO scoreDTO);
+
+    ScoreDTO selectScoreByStudentId(int id);
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.ljm.secw.mapper.ClazzMapper">
+
+    <select id="selectNameListByTeacherId" resultType="team.ljm.secw.dto.ClazzDTO">
+        select id, clazz_name
+        from t_clazz
+        where teacher_id = #{teacherId}
+    </select>
+
+    <insert id="insert">
+        insert into t_clazz(clazz_name, teacher_id)
+        values (#{clazzName}, #{teacherId})
+    </insert>
+
+    <select id="selectScoreRuleByClazzId" resultType="team.ljm.secw.entity.Clazz">
+        select usual_score_proportion, absent_score, performance_score, quiz_a_score, quiz_b_score, quiz_c_score, quiz_d_score, quiz_e_score, not_submitted_score
+        from t_clazz
+        where id = #{clazzId}
+    </select>
+
+    <update id="updateScoreRule">
+        update t_clazz
+        set usual_score_proportion = #{usualScoreProportion},
+            absent_score = #{absentScore},
+            performance_score = #{performanceScore},
+            quiz_a_score = #{quizAScore},
+            quiz_b_score = #{quizBScore},
+            quiz_b_score = #{quizCScore},
+            quiz_d_score = #{quizDScore},
+            quiz_e_score = #{quizEScore},
+            not_submitted_score = #{notSubmittedScore}
+        where id = #{id}
+    </update>
+
+</mapper>

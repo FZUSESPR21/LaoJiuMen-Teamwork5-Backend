@@ -2,6 +2,7 @@ package team.ljm.secw.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class StudentMgtController {
 
     @Autowired
     IClazzService clazzService;
+
 
     @RequestMapping(value = "/teacher/stu_mgt/excel")
     @ResponseBody
@@ -78,6 +80,7 @@ public class StudentMgtController {
         }
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/stu_mgt/all", method = RequestMethod.GET)
     @ResponseBody
     public ResponseVO showStudentListByClazzId(@RequestParam(value = "clazzId") Integer clazzId,
@@ -89,6 +92,7 @@ public class StudentMgtController {
         return new ResponseVO("200", "", pageInfo);
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/stu_mgt/add", method = RequestMethod.POST)
     @ResponseBody
     public ResponseVO addStudent(@RequestBody Student student) {
@@ -96,18 +100,21 @@ public class StudentMgtController {
         return new ResponseVO("200", "", studentMgtService.add(student));
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/stu_mgt/update", method = RequestMethod.POST)
     @ResponseBody
     public ResponseVO updateStudent(@RequestBody Student student) {
         return new ResponseVO("200", "", studentMgtService.modify(student));
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/stu_mgt/delete", method = RequestMethod.POST)
     @ResponseBody
     public ResponseVO removeStudent(@RequestBody Student student) {
         return new ResponseVO("200", "", studentMgtService.remove(student));
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/stu_mgt/dlt_li", method = RequestMethod.POST)
     @ResponseBody
     public ResponseVO removeStudentList(@RequestBody List<Student> studentList) {
@@ -115,10 +122,16 @@ public class StudentMgtController {
         return new ResponseVO("200", "", studentMgtService.removeList(studentList));
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/cls/add")
     @ResponseBody
     public ResponseVO addClazz(@RequestBody Clazz clazz) {
-        return new ResponseVO("200", "", clazzService.add(clazz));
+        int num = clazzService.add(clazz);
+        if (num == 1) {
+            return new ResponseVO("200", String.valueOf(num), clazzService.findClazzNameListByTeacherId(clazz.getTeacherId()));
+        } else {
+            return new ResponseVO("500", String.valueOf(num));
+        }
     }
 
 }

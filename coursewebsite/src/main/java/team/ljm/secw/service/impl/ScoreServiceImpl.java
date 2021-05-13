@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import team.ljm.secw.dto.HomeworkDTO;
 import team.ljm.secw.dto.ScoreDTO;
+import team.ljm.secw.entity.Clazz;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.mapper.ScoreMapper;
 import team.ljm.secw.service.IScoreService;
@@ -63,7 +64,7 @@ public class ScoreServiceImpl implements IScoreService {
 
     @Override
     public int batchModifyScore(List<ScoreDTO> scoreList) {
-        return 0;
+        return scoreMapper.batchUpdateScore(scoreList);
     }
 
     @Override
@@ -89,4 +90,16 @@ public class ScoreServiceImpl implements IScoreService {
             return new ResponseVO("200", updateMsg);
         }
     }
+
+    @Override
+    public int modifyScore(ScoreDTO scoreDTO) {
+        return scoreMapper.updateScore(scoreDTO);
+    }
+
+    @Override
+    public ScoreDTO findScoreByStudentId(int id) {
+        return scoreMapper.selectScoreByStudentId(id);
+    }
+
+
 }

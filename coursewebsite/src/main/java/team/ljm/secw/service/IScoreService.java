@@ -3,6 +3,7 @@ package team.ljm.secw.service;
 import org.springframework.web.multipart.MultipartFile;
 import team.ljm.secw.dto.HomeworkDTO;
 import team.ljm.secw.dto.ScoreDTO;
+import team.ljm.secw.entity.Clazz;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.vo.ResponseVO;
 
@@ -30,5 +31,10 @@ public interface IScoreService {
     int batchModifyScore(List<ScoreDTO> scoreList);
 
     ResponseVO readExcelFile(MultipartFile file);
+
+    int modifyScore(ScoreDTO scoreDTO);
+
+    ScoreDTO findScoreByStudentId(int id);
+
 }
 

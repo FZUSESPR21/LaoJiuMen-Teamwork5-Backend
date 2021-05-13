@@ -16,6 +16,15 @@ public class ResponseVO {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "ResponseVO{" +
+                "code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public String getCode() {
         return code;
     }

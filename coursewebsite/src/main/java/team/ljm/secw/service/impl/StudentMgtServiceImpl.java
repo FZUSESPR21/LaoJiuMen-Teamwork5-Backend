@@ -6,10 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.mapper.StudentMgtMapper;
 import team.ljm.secw.service.IStudentMgtService;
-import team.ljm.secw.utils.ExcelUtil;
+import team.ljm.secw.utils.StudentExcelUtil;
 import team.ljm.secw.vo.ResponseVO;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -20,13 +19,12 @@ public class StudentMgtServiceImpl implements IStudentMgtService {
 
     @Override
     public ResponseVO readExcelFile(MultipartFile file) {
-        ExcelUtil excelUtil=new ExcelUtil();
         List<Student> studentList = null;
         int insertResult = 0;
         String insertMsg = "";
 
         try {
-            studentList = excelUtil.getExcelInfo(file);
+            studentList = StudentExcelUtil.getExcelInfo(file);
 
             for (int i = 0; i < studentList.size(); i++) {
                 studentList.get(i).setPwd("123456");

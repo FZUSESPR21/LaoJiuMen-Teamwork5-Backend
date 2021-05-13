@@ -55,4 +55,104 @@
     </aop:config>
     <aop:aspectj-autoproxy  proxy-target-class="true"/>
 
+    <!--解决报错，组装默认的subjectDAO-->
+    <bean id="subjectDAO" class="org.apache.shiro.mgt.DefaultSubjectDAO">
+        <property name="sessionStorageEvaluator" ref="sessionStorageEvaluator"/>
+    </bean>
+    <bean id="sessionStorageEvaluator" class="org.apache.shiro.mgt.DefaultSessionStorageEvaluator">
+        <property name="sessionStorageEnabled" value="false"/>
+    </bean>
+
+    <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+        <property name="arguments" ref="securityManager"/>
+    </bean>
+
+    <!-- 禁用掉会话调度器 -->
+    <bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager">
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+    </bean>
+
+    <!--自定义拦截规则-->
+    <bean id="jwtFilter" class="team.ljm.secw.shiro.JWTFilter"/>
+
+    <!--配置多Realm管理器-->
+    <bean id="modularRealmAuthenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+        <property name="realms">
+            <list>
+                <ref bean="customRealm"/>
+                <ref bean="myRealm"/>
+            </list>
+        </property>
+        <!--设置多Realm管理器的策略-->
+        <property name="authenticationStrategy">
+            <!--
+              FirstSuccessfulStrategy ： 当有一个Realm认证成功就为成功,只返回第一个Realm身份验证 成功的认证信息,其他的忽略
+              AtLeastOneSuccessfulStrategy（默认策略 ）：只要有一个Realm验证成功即可,返回所有Realm身份验证成功的认证信息
+              AllSuccessfulStrategy：所有Realm验证成功才算成功,且返回所有Realm身份验证成功的认证信息,如果有一个失败就失败
+            -->
+            <bean class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy"/>
+        </property>
+    </bean>
+
+    <!-- 配置自定义Realm -->
+    <bean id="myRealm" class="team.ljm.secw.shiro.MyRealm"/>
+    <bean id="customRealm" class="team.ljm.secw.shiro.CustomRealm"/>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+<!--        <property name="authenticator" ref="modularRealmAuthenticator"/>-->
+<!--        &lt;!&ndash;注入认证授权realm&ndash;&gt;-->
+<!--        <property name="realms">-->
+<!--            <list>-->
+<!--                <ref bean="customRealm"/>-->
+<!--                <ref bean="myRealm"/>-->
+<!--            </list>-->
+<!--        </property>-->
+        <property name="realm" ref="myRealm"/>
+
+        <!-- 在安全管理器中注入缓存管理器 -->
+        <!--        <property name="cacheManager" ref="cacheManager"/>-->
+        <!--解决报错，组装默认的subjectDAO-->
+        <property name="subjectDAO" ref="subjectDAO"/>
+        <!-- 禁用掉会话调度器 -->
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- Shiro过滤器 核心-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!--        引入自定的拦截器-->
+        <property name="filters">
+            <map>
+                <entry key="jwt" value-ref="jwtFilter"/>
+            </map>
+        </property>
+        <!--        &lt;!&ndash; 身份认证失败，则跳转到登录页面的配置 &ndash;&gt;-->
+        <!--        <property name="loginUrl" value="/login.jsp"/>-->
+        <!--        &lt;!&ndash; 权限认证失败，则跳转到指定页面 &ndash;&gt;-->
+<!--                <property name="unauthorizedUrl" value="/401"/>-->
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <property name="filterChainDefinitions">
+            <value>
+                <!--anon 表示匿名访问，不需要认证以及授权-->
+                /login=anon
+                /logout=logout
+                /captcha=anon
+                /chg_pwd=anon
+                /teacher/stu_mgt/down=anon
+                /teacher/stu_mgt/excel=anon
+<!--                /pages/login.jsp=anon-->
+                /**/*.jsp=anon
+                /401=anon
+<!--                /student/**=jwt,roles[student]-->
+<!--                /teacher/**=jwt,roles[teacher]-->
+                <!--authc表示需要认证 没有进行身份认证是不能进行访问的-->
+                /**=jwt
+            </value>
+        </property>
+    </bean>
+
 </beans>

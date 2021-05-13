@@ -95,4 +95,18 @@
         </foreach>
     </update>
 
+    <update id="updateScore">
+        update t_student
+        set total_score = #{totalScore},
+            written_score = #{writtenScore},
+            usual_score = #{usualScore}
+        where account = #{account}
+    </update>
+
+    <select id="selectScoreByStudentId" resultType="team.ljm.secw.dto.ScoreDTO">
+        select total_score, written_score, usual_score
+        from t_student
+        where id = #{id}
+    </select>
+
 </mapper>

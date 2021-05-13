@@ -3,15 +3,14 @@ package team.ljm.secw.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.ljm.secw.dto.ExcelDataDTO;
 import team.ljm.secw.dto.ExcelHeadDTO;
+import team.ljm.secw.dto.ScoreDTO;
 import team.ljm.secw.entity.Clazz;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.service.IClazzService;
@@ -42,6 +41,7 @@ public class ScoreController {
     @Autowired
     IClazzService clazzService;
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/score/all")
     @ResponseBody
     public ResponseVO showScoreList(@RequestParam("clazzId") int clazzId,
@@ -52,24 +52,28 @@ public class ScoreController {
         return new ResponseVO("200", "", pageInfo);
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/homework/title")
     @ResponseBody
     public ResponseVO showHomeworkIdAndTitleListByClazzId(@RequestParam("clazzId") int clazzId) {
         return new ResponseVO("200", "", scoreService.findHomeworkIdAndTitleListByClazzId(clazzId));
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/score/homework")
     @ResponseBody
     public ResponseVO showHomeworkScoreList(@RequestParam("hid") int hid, @RequestParam("cid") int cid) {
         return new ResponseVO("200", "", scoreService.findHomeworkScoreByHomeworkIdAndClazzId(hid, cid));
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/score/final")
     @ResponseBody
     public ResponseVO showHomeworkScoreList(@RequestParam("cid") int cid) {
         return new ResponseVO("200", "", scoreService.findFinalScoreByClazzId(cid));
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/score/down", method = RequestMethod.GET)
     public void downloadScoreFormat(@RequestParam("clazzId") int clazzId, HttpServletResponse response) {
         try {
@@ -104,7 +108,6 @@ public class ScoreController {
             List<Integer> allHomeworkScoreList = scoreService.findHomeworkScoreListOrderByAccountAndStartAt(clazzId);
             List<String> studentAccountList = scoreService.findStudentAccountListByClazzId(clazzId);
             int studentNum = studentService.sum(clazzId);
-            //int studentNum = 3;
             int homeworkNum = allHomeworkScoreList.size()/studentNum;
             List<String> homeworkScoreList = new ArrayList<>();
 
@@ -158,10 +161,39 @@ public class ScoreController {
         }
     }
 
+    @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/score/excel")
     @ResponseBody
     public ResponseVO doExcel(@RequestParam(value = "file_excel") MultipartFile file) {
         return scoreService.readExcelFile(file);
+    }
+
+    @RequiresRoles("teacher")
+    @RequestMapping(value = "/teacher/score/rules/search", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseVO showScoreRulesByClazzId(@RequestParam("cid") int cid) {
+        return new ResponseVO("200", "", clazzService.findScoreRuleByClazzId(cid));
+    }
+
+    @RequiresRoles("teacher")
+    @RequestMapping(value = "/teacher/score/rules/update", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseVO updateScoreRule(@RequestBody Clazz clazz) {
+        return new ResponseVO("200", "", clazzService.modifyScoreRule(clazz));
+    }
+
+    @RequiresRoles("teacher")
+    @RequestMapping(value = "/teacher/score/update", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseVO updateOneStudentScore(@RequestBody ScoreDTO scoreDTO) {
+        return new ResponseVO("200", "", scoreService.modifyScore(scoreDTO));
+    }
+
+    @RequiresRoles("student")
+    @RequestMapping(value = "/student/score/search", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseVO showScore(@RequestParam("sid") int sid) {
+        return new ResponseVO("200", "", scoreService.findScoreByStudentId(sid));
     }
 
 }

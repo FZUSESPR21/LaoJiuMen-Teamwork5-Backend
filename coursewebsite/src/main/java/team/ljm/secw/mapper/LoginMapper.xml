@@ -3,8 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="team.ljm.team.ljm.secw.mapper.LoginMapper">
+<mapper namespace="team.ljm.secw.mapper.LoginMapper">
 
+    <select id="selectStudentByAccount" resultType="team.ljm.secw.entity.Student">
+        select id, account, student_name, pwd, clazz_id
+        from t_student
+        where account = #{account}
+    </select>
 
+    <select id="selectTeacherByAccount" resultType="team.ljm.secw.entity.Teacher">
+        select id, account, teacher_name, pwd
+        from t_teacher
+        where account = #{account}
+    </select>
 
 </mapper>

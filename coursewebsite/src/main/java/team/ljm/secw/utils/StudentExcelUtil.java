@@ -18,28 +18,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ExcelUtil {
+public class StudentExcelUtil {
 
     //总行数
-    private int totalRows = 0;
+    private static int totalRows = 0;
     //总条数
-    private int totalCells = 0;
+    private static int totalCells = 0;
     //错误信息接收器
-    private String errorMsg;
-    //构造方法
-    public ExcelUtil(){}
+    private static String errorMsg;
     //获取总行数
-    public int getTotalRows()  { return totalRows;}
+    public static int getTotalRows()  { return totalRows;}
     //获取总列数
-    public int getTotalCells() {  return totalCells;}
+    public static int getTotalCells() {  return totalCells;}
     //获取错误信息
-    public String getErrorInfo() { return errorMsg; }
+    public static String getErrorInfo() { return errorMsg; }
     /**
      * 读EXCEL文件，获取信息集合
      * @param
      * @return
      */
-    public List<Student> getExcelInfo(MultipartFile mFile) {
+    public static List<Student> getExcelInfo(MultipartFile mFile) {
         String fileName = mFile.getOriginalFilename();//获取文件名
         System.out.println("文件名"+fileName);
         if (fileName == null) {
@@ -67,7 +65,7 @@ public class ExcelUtil {
      * @return
      * @throws IOException
      */
-    public List<Student> createExcel(InputStream is, boolean isExcel2003) {
+    public static List<Student> createExcel(InputStream is, boolean isExcel2003) {
         List<Student> stuList = null;
         try{
             Workbook wb = null;
@@ -87,16 +85,16 @@ public class ExcelUtil {
      * @param wb
      * @return
      */
-    private List<Student> readExcelValue(Workbook wb) {
+    private static List<Student> readExcelValue(Workbook wb) {
         // 得到第一个shell
         Sheet sheet = wb.getSheetAt(0);
         // 得到Excel的行数
-        this.totalRows = sheet.getPhysicalNumberOfRows();
-        System.out.println("行数======="+this.totalRows);
+        totalRows = sheet.getPhysicalNumberOfRows();
+        System.out.println("行数======="+totalRows);
         // 得到Excel的列数(前提是有行数)
         if (totalRows > 1 && sheet.getRow(0) != null) {
-            this.totalCells = sheet.getRow(0).getPhysicalNumberOfCells();
-            System.out.println("总列数=========="+this.totalCells);
+            totalCells = sheet.getRow(0).getPhysicalNumberOfCells();
+            System.out.println("总列数=========="+totalCells);
         }
         List<Student> studentList = new ArrayList<Student>();
         // 循环Excel行数
@@ -107,7 +105,48 @@ public class ExcelUtil {
             }
             Student student = new Student();
             // 循环Excel的列（这里根据表字段不同，自行更换）
-            for (int c = 0; c < this.totalCells; c++) {
+            for (int c = 0; c < totalCells; c++) {
+                Cell cell = row.getCell(c);
+                if (c == 0) {
+                    student.setAccount(getValue(cell));
+                } else if(c == 1) {
+                    student.setStudentName(getValue(cell));
+                } else if(c == 2) {
+                    student.setEmail(getValue(cell));
+                }
+            }
+            // 添加到list
+            studentList.add(student);
+        }
+        return studentList;
+    }
+
+    /**
+     * 读取Excel里面客户的信息
+     * @param wb
+     * @return
+     */
+    private static List<Student> readScoreExcelValue(Workbook wb) {
+        // 得到第一个shell
+        Sheet sheet = wb.getSheetAt(0);
+        // 得到Excel的行数
+        totalRows = sheet.getPhysicalNumberOfRows();
+        System.out.println("行数======="+totalRows);
+        // 得到Excel的列数(前提是有行数)
+        if (totalRows > 1 && sheet.getRow(0) != null) {
+            totalCells = sheet.getRow(0).getPhysicalNumberOfCells();
+            System.out.println("总列数=========="+totalCells);
+        }
+        List<Student> studentList = new ArrayList<Student>();
+        // 循环Excel行数
+        for (int r = 1; r < totalRows; r++) {
+            Row row = sheet.getRow(r);
+            if (row == null){
+                continue;
+            }
+            Student student = new Student();
+            // 循环Excel的列（这里根据表字段不同，自行更换）
+            for (int c = 0; c < totalCells; c++) {
                 Cell cell = row.getCell(c);
                 if (c == 0) {
                     student.setAccount(getValue(cell));
@@ -124,7 +163,7 @@ public class ExcelUtil {
     }
 
     //解决excel类型问题，获得数值
-    public  String getValue(Cell cell) {
+    public static String getValue(Cell cell) {
         String value = "";
         if(null==cell){
             return value;
@@ -153,7 +192,7 @@ public class ExcelUtil {
                 break;
             //字符串类型
             case STRING:
-                value = cell.getStringCellValue().toString();
+                value = cell.getRichStringCellValue().toString();
                 break;
             // 公式类型
             case FORMULA:
@@ -165,7 +204,7 @@ public class ExcelUtil {
                 break;
             // 布尔类型
             case BOOLEAN:
-                value = " "+ cell.getBooleanCellValue();
+                value = ""+ cell.getBooleanCellValue();
                 break;
             default:
                 value = cell.getStringCellValue().toString();
@@ -182,7 +221,7 @@ public class ExcelUtil {
      * @param filePath
      * @return
      */
-    public boolean validateExcel(String filePath) {
+    public static boolean validateExcel(String filePath) {
         if (filePath == null || !(isExcel2003(filePath) || isExcel2007(filePath))) {
             errorMsg = "文件名不是excel格式";
             return false;

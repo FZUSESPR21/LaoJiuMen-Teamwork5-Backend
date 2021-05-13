@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class HomeworkResult {
     private int id;
+    private int homeworkId;
+    private int studentId;
     private String content;
     private String filePath;
     private int score;
@@ -20,12 +22,30 @@ public class HomeworkResult {
     public String toString() {
         return "HomeworkResult{" +
                 "id=" + id +
+                ", homeworkId=" + homeworkId +
+                ", studentId=" + studentId +
                 ", content='" + content + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", score=" + score +
                 ", remark='" + remark + '\'' +
                 ", submittedAt=" + submittedAt +
                 '}';
+    }
+
+    public int getHomeworkId() {
+        return homeworkId;
+    }
+
+    public void setHomeworkId(int homeworkId) {
+        this.homeworkId = homeworkId;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
     public int getId() {
