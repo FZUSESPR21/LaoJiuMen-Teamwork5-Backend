@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class HomeworkDTO {
+public class HomeworkInfoDTO {
     private int id;
     private int clazzId;
     private String title;

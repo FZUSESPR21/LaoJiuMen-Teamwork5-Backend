@@ -63,8 +63,8 @@
 
     <update id="updateToCorrect" parameterType="team.ljm.secw.entity.HomeworkResult">
         update t_homework_result set score = #{score},remark = #{remark}
-        where student_id = #{studentId} and homework_id = #{homeworkId}
-    </update>
+        where id = #{id}
+     </update>
 
     <delete id="delete">
         delete from t_homework_result where id = #{id}
