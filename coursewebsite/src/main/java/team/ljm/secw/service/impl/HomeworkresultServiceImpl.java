@@ -63,7 +63,7 @@ public class HomeworkresultServiceImpl implements IHomeworkresultService {
     }
 
     @Override
-    public int findResultStatus(HomeworkResult homeworkResult) {
+    public Integer findResultStatus(HomeworkResult homeworkResult) {
         return homeworkresultMapper.selectScore(homeworkResult);
     }
 

@@ -14,7 +14,7 @@ public interface IHomeworkresultService {
     List<HomeworkResultDTO> findNotSub (int id);//未提交
     List<HomeworkResultDTO> findNotCor (int id);//未批改
     List<HomeworkResultDTO> findCor (int id);//已批改
-    int findResultStatus(HomeworkResult homeworkResult);
+    Integer findResultStatus(HomeworkResult homeworkResult);
     HomeworkResult findResultStu(HomeworkResult homeworkResult);
     int add(HomeworkResult homeworkResult);
     int modify(HomeworkResult homeworkResult);

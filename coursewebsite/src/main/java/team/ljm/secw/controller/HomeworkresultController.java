@@ -116,27 +116,35 @@ public class HomeworkresultController {
     @RequestMapping("/student/homework_result/submit")
     @ResponseBody
     public ResponseVO submit(@ModelAttribute HomeworkResultDTO requestHomeworkResult, HttpServletRequest request, Model model) {
-        //将附件储存
-        try {
-            MultipartFile file = requestHomeworkResult.getFile();
-            String originalFileName = file.getOriginalFilename();
-            String fileUrl = "";
-            Date date = new Date();
-            requestHomeworkResult.setSubmittedAt(date);
-            fileUrl = "/WEB-INF/homework/" + requestHomeworkResult.getHomeworkId() + "/" + requestHomeworkResult.getStudentId() + "/" + originalFileName;
-            fileUrl = request.getSession().getServletContext().getRealPath(fileUrl);
-            //向url地址存储文件
-            FileUtil.writeFileToUrl(file, fileUrl);
-            requestHomeworkResult.setFilePath(fileUrl);
-        } catch (Exception e) {
-            e.printStackTrace();
+        MultipartFile file = requestHomeworkResult.getFile();
+        if (file != null){
+            //将附件储存
+            try {
+                String originalFileName = file.getOriginalFilename();
+                String fileUrl = "";
+                Date date = new Date();
+                requestHomeworkResult.setSubmittedAt(date);
+                fileUrl = "/WEB-INF/homework/" + requestHomeworkResult.getHomeworkId() + "/" + requestHomeworkResult.getStudentId() + "/" + originalFileName;
+                fileUrl = request.getSession().getServletContext().getRealPath(fileUrl);
+                //向url地址存储文件
+                FileUtil.writeFileToUrl(file, fileUrl);
+                requestHomeworkResult.setFilePath(fileUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         HomeworkResult homeworkResult = new HomeworkResult();
         homeworkResult.setHomeworkId(requestHomeworkResult.getHomeworkId());
         homeworkResult.setStudentId(requestHomeworkResult.getStudentId());
         homeworkResult.setFilePath(requestHomeworkResult.getFilePath());
         homeworkResult.setContent(requestHomeworkResult.getContent());
-        int id = homeworkResultService.findResultStatus(homeworkResult);
+        Integer id = homeworkResultService.findResultStatus(homeworkResult);
+        if (id == null){
+            HomeworkResult homeworkResult1 = new HomeworkResult();
+            homeworkResult1.setHomeworkId(requestHomeworkResult.getHomeworkId());
+            homeworkResult1.setStudentId(requestHomeworkResult.getStudentId());
+            homeworkResultService.add(homeworkResult1);
+        }
         Date date = new Date();
         requestHomeworkResult.setSubmittedAt(date);
         //已经交过，判定为更新提交结果
@@ -151,6 +159,7 @@ public class HomeworkresultController {
                 e.printStackTrace();
             }
         }
+        homeworkResult.setScore(-1);
         //更新结果
         homeworkResultService.modify(homeworkResult);
         return new ResponseVO("200","success");
@@ -159,17 +168,22 @@ public class HomeworkresultController {
     //学生查看已提交详情
     @RequestMapping("/student/homework_result/search")
     @ResponseBody
-    public ResponseVO selectByHwIdStuId(@RequestBody HomeworkResult requestHomeworkResult){
-        HomeworkResult homeworkResult = homeworkResultService.findResultStu(requestHomeworkResult);
+    public ResponseVO selectByHwIdStuId(@RequestParam("studentId") int studentId,
+                                        @RequestParam("homeworkId") int homework){
+        HomeworkResult homeworkResult = new HomeworkResult();
+        homeworkResult.setStudentId(studentId);
+        homeworkResult.setHomeworkId(homework);
+        homeworkResult = homeworkResultService.findResultStu(homeworkResult);
         return new ResponseVO("200","success",homeworkResult);
     }
 
     //下载附件
     @RequestMapping(value = "/homework_result/download")
-    public void download(HttpServletRequest request, HttpServletResponse response , @RequestBody HomeworkResult requestHomeworkResult){
+    public void download(HttpServletRequest request, HttpServletResponse response , @RequestParam("id") int id){
         try {
-            String filePath =  requestHomeworkResult.getFilePath().trim();
-            String filename = filePath.substring(filePath.lastIndexOf("/")+1);
+            HomeworkResult homeworkResult = homeworkResultService.findById(id);
+            String filePath = homeworkResult.getFilePath().trim();
+            String filename = filePath.substring(filePath.lastIndexOf("\\")+1);
             File file = new File(filePath);//如果文件存在的话
             if (file.exists()) {//获取输入流
                 InputStream bis = new BufferedInputStream(new FileInputStream(file));//假如以中文名下载的话

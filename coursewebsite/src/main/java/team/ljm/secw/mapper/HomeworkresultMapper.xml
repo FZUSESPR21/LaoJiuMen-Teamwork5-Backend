@@ -38,7 +38,7 @@
         select t_homework_result.id, t_homework_result.content, t_homework_result.file_path, t_homework_result.score, t_homework_result.remark,
                t_homework_result.homework_id, t_homework_result.student_id, t_homework_result.submitted_at,t_homework.title from t_homework_result
               inner join t_homework on t_homework_result.homework_id = t_homework.id
-        where student_id = #{id} and score >= 0
+        where student_id = #{id} and score >= -1
     </select>
 
     <select id="selectByHwIdStId" parameterType="team.ljm.secw.entity.HomeworkResult" resultType="team.ljm.secw.entity.HomeworkResult">
@@ -46,7 +46,7 @@
         where student_id = #{studentId} and homework_id = #{homeworkId}
     </select>
 
-    <select id="selectScore" parameterType="team.ljm.secw.entity.HomeworkResult" resultType="int">
+    <select id="selectScore" parameterType="team.ljm.secw.entity.HomeworkResult" resultType="Integer">
         select score from t_homework_result where student_id = #{studentId} and homework_id = #{homeworkId}
     </select>
 

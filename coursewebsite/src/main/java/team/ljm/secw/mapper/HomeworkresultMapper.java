@@ -17,7 +17,7 @@ public interface HomeworkresultMapper {
     List<HomeworkResultDTO> selectByIdScore(@Param("id") int id,@Param("score")int score);
     Student selectStuInfo(int id);
     //获取成绩，需要学生id与作业id，同时用于提交状态判断
-    int selectScore (HomeworkResult homeworkResult);
+    Integer selectScore (HomeworkResult homeworkResult);
     int insert(HomeworkResult homeworkResult);
     int updateToSubmit(HomeworkResult homeworkResult);
     int updateToCorrect(HomeworkResult homeworkResult);
