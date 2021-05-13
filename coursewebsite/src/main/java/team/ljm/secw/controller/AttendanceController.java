@@ -15,7 +15,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/attendance")
 /**
- * /all
+ * /all?clazzId= &studentId=,学生签到界面
+ * /insert,不要管
+ * /stuUpdate?attendeAt=,插入学生签到时间,需要传一个时间过来
+ * /teacherAll?clazzId=,教师的签到首页
+ * /stuList?attendanceId=,点击一个签到进去,获得学生的签到情况
+ * /release?attendanceName=  &endAt(结束时间) &issuer=  &clazzId=,教师发布签到
+ * /updateTime?id=   &endAt=   ,教师更改签到时间
  */
 public class AttendanceController {
     @Autowired
