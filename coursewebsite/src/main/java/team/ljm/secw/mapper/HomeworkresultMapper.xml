@@ -57,7 +57,7 @@
     </insert>
 
     <update id="updateToSubmit" parameterType="team.ljm.secw.entity.HomeworkResult">
-        update t_homework_result set content = #{content}, file_path = #{filePath}, submitted_at = #{submittedAt}
+        update t_homework_result set content = #{content}, file_path = #{filePath}, submitted_at = #{submittedAt} , score = #{score}
         where student_id = #{studentId} and homework_id = #{homeworkId}
     </update>
 

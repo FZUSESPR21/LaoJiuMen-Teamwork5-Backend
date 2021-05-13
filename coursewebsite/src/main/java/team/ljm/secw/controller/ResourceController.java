@@ -61,7 +61,7 @@ public class ResourceController {
             resource.setDownloads(0);
             Resource resource1 = resourceService.findByName(resource);
             System.out.println(resource1);
-            if (resource1.getResourceName()==null)
+            if (resource1==null)
             resourceService.add(resource);
             else resourceService.modifyResource(resource);
         }

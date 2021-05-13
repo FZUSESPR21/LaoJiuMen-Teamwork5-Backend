@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import team.ljm.secw.dto.HomeworkDTO;
+import team.ljm.secw.dto.HomeworkInfoDTO;
 import team.ljm.secw.entity.Homework;
 import team.ljm.secw.entity.HomeworkResult;
 import team.ljm.secw.entity.Resource;
@@ -38,8 +38,24 @@ public class HomeworkController {
     //@RequiresRoles("teacher")
     public ResponseVO allHomework(@RequestParam(value = "pn",defaultValue = "1") int pn){
         PageHelper.startPage(pn,5);
-        List<Homework> list = homeworkService.findAll();
-        PageInfo<Homework> pageInfo = new PageInfo<>(list,5);
+        List<HomeworkInfoDTO> list = new ArrayList<>();
+        Date date = new Date();
+        for (Homework homework:homeworkService.findAll()){
+            if (homework.getStartAt().before(date)){
+                HomeworkInfoDTO homeworkInfoDTO = new HomeworkInfoDTO();
+                homeworkInfoDTO.setClazzId(homework.getClazzId());
+                homeworkInfoDTO.setContent(homework.getContent());
+                homeworkInfoDTO.setId(homework.getId());
+                homeworkInfoDTO.setTitle(homework.getTitle());
+                homeworkInfoDTO.setStartAt(homework.getStartAt());
+                homeworkInfoDTO.setEndAt(homework.getEndAt());
+                if (homework.getEndAt().before(date))homeworkInfoDTO.setStatus("已结束");
+                else homeworkInfoDTO.setStatus("进行中");
+                if (homework.getStartAt().after(date))homeworkInfoDTO.setStatus("未发布");
+                list.add(homeworkInfoDTO);
+            }
+        }
+        PageInfo<HomeworkInfoDTO> pageInfo = new PageInfo<>(list,5);
         return new ResponseVO("200", "success", pageInfo);
     }
 
@@ -49,8 +65,22 @@ public class HomeworkController {
     public ResponseVO myClassHomework(@RequestParam("clazzId")  int clazzId,
                                       @RequestParam(value = "pn",defaultValue = "1") int pn) {
         PageHelper.startPage(pn,5);
-        List<Homework> list = homeworkService.findListByClazzId(clazzId);
-        PageInfo<Homework> pageInfo = new PageInfo<>(list,5);
+        List<HomeworkInfoDTO> list = new ArrayList<>();
+        Date date = new Date();
+        for (Homework homework:homeworkService.findListByClazzId(clazzId)){
+            HomeworkInfoDTO homeworkInfoDTO = new HomeworkInfoDTO();
+            homeworkInfoDTO.setClazzId(homework.getClazzId());
+            homeworkInfoDTO.setContent(homework.getContent());
+            homeworkInfoDTO.setId(homework.getId());
+            homeworkInfoDTO.setTitle(homework.getTitle());
+            homeworkInfoDTO.setStartAt(homework.getStartAt());
+            homeworkInfoDTO.setEndAt(homework.getEndAt());
+            if (homework.getEndAt().before(date))homeworkInfoDTO.setStatus("已结束");
+            else homeworkInfoDTO.setStatus("进行中");
+            if (homework.getStartAt().after(date))homeworkInfoDTO.setStatus("未发布");
+            list.add(homeworkInfoDTO);
+        }
+        PageInfo<HomeworkInfoDTO> pageInfo = new PageInfo<>(list,5);
         return new ResponseVO("200", "success", pageInfo);
     }
 
@@ -116,30 +146,30 @@ public class HomeworkController {
                                        @RequestParam("studentId") int studentId,
                                        @RequestParam(value = "pn",defaultValue = "1") int pn) {
         PageHelper.startPage(pn,5);
-        List<HomeworkDTO> list = new ArrayList<>();
+        List<HomeworkInfoDTO> list = new ArrayList<>();
         Date date = new Date();
         HomeworkResult homeworkResult = new HomeworkResult();
         homeworkResult.setStudentId(studentId);
         for (Homework homework:homeworkService.findListByClazzId(clazzId)){
             if (homework.getStartAt().before(date)){
-                HomeworkDTO homeworkDTO = new HomeworkDTO();
-                homeworkDTO.setClazzId(homework.getClazzId());
-                homeworkDTO.setContent(homework.getContent());
-                homeworkDTO.setId(homework.getId());
+                HomeworkInfoDTO homeworkInfoDTO = new HomeworkInfoDTO();
+                homeworkInfoDTO.setClazzId(homework.getClazzId());
+                homeworkInfoDTO.setContent(homework.getContent());
+                homeworkInfoDTO.setId(homework.getId());
                 homeworkResult.setHomeworkId(homework.getId());
                 //System.out.println(homeworkResultService.findResultStatus(homeworkResult));
                 Integer score = homeworkResultService.findResultStatus(homeworkResult);
                 if (score == null)score = -2;
-                homeworkDTO.setScore(score);
-                homeworkDTO.setTitle(homework.getTitle());
-                homeworkDTO.setStartAt(homework.getStartAt());
-                homeworkDTO.setEndAt(homework.getEndAt());
-                if (homework.getEndAt().before(date))homeworkDTO.setStatus("已结束");
-                else homeworkDTO.setStatus("进行中");
-                list.add(homeworkDTO);
+                homeworkInfoDTO.setScore(score);
+                homeworkInfoDTO.setTitle(homework.getTitle());
+                homeworkInfoDTO.setStartAt(homework.getStartAt());
+                homeworkInfoDTO.setEndAt(homework.getEndAt());
+                if (homework.getEndAt().before(date))homeworkInfoDTO.setStatus("已结束");
+                else homeworkInfoDTO.setStatus("进行中");
+                list.add(homeworkInfoDTO);
             }
         }
-        PageInfo<HomeworkDTO> pageInfo = new PageInfo<>(list,5);
+        PageInfo<HomeworkInfoDTO> pageInfo = new PageInfo<>(list,5);
         return new ResponseVO("200", "success", pageInfo);
     }
 
