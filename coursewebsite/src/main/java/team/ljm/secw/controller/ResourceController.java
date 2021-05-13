@@ -176,6 +176,16 @@ public class ResourceController {
     @ResponseBody
     public ResponseVO delete(@RequestBody Resource requestResource){
         int id = requestResource.getId();
+        Resource resource0 = resourceService.findById(id);
+        String url = resource0.getFilePath();
+        Path path = Paths.get(url);
+        try {
+            //删除原文件
+            Files.delete(path);
+            System.out.println("1111111");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         resourceService.remove(id);
         return new ResponseVO("200","success");
     }
