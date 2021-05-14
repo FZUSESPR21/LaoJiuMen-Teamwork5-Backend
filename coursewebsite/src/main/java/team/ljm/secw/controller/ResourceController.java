@@ -3,6 +3,8 @@ package team.ljm.secw.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.poi.ss.usermodel.PaperSize;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +36,7 @@ public class ResourceController {
     private IResourceService resourceService;
 
     //所有资源，教师，上传,注意:由于文件存放路径是由教师id，班级id，构成，若同老师上传同名文件至同一个班级将造成覆盖
+    //@RequiresRoles("teacher")
     @RequestMapping("/teacher/resource/upload")
     @ResponseBody
     public ResponseVO upload(@ModelAttribute ResourceDTO requestResource, HttpServletRequest request, Model model) {
@@ -72,6 +75,7 @@ public class ResourceController {
     }
 
     //学习计划，教师，更新
+    //@RequiresRoles("teacher")
     @RequestMapping("/teacher/resource/update_other")
     @ResponseBody
     public ResponseVO submitOther(@ModelAttribute ResourceDTO requestResource, HttpServletRequest request, Model model) {
@@ -111,6 +115,7 @@ public class ResourceController {
     }
 
     //课程资源，教师，全部
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/resource/real_all")
     @ResponseBody
     public ResponseVO allFile(){
@@ -119,6 +124,7 @@ public class ResourceController {
     }
 
     //课程资源，教师按班级查
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/resource/all")
     @ResponseBody
     public ResponseVO searchFileByClazzId(@RequestParam("clazzId") int clazzId,
@@ -130,6 +136,7 @@ public class ResourceController {
     }
 
     //课程资源，学生按班级查
+    @RequiresRoles("student")
     @RequestMapping("/student/resource/all")
     @ResponseBody
     public ResponseVO classFile(@RequestParam("clazzId") int clazzId,
@@ -141,6 +148,7 @@ public class ResourceController {
     }
 
     //课程其他资源，按班级查
+    @RequiresRoles(value={"student","teacher"}, logical = Logical.OR)
     @RequestMapping("/resource/other")
     @ResponseBody
     public ResponseVO otherFile(@RequestParam("clazzId") int clazzId,
@@ -152,6 +160,7 @@ public class ResourceController {
     }
 
     //学习计划，按班级查
+    @RequiresRoles(value={"student","teacher"}, logical = Logical.OR)
     @RequestMapping("/resource/plan")
     @ResponseBody
     public ResponseVO planFile(@RequestParam("clazzId") int clazzId,
@@ -163,6 +172,7 @@ public class ResourceController {
     }
 
     //课程资源，按单个id查
+    @RequiresRoles(value={"student","teacher"}, logical = Logical.OR)
     @RequestMapping("/resource/search")
     @ResponseBody
     public ResponseVO searchById(@RequestBody Resource requestResource){
@@ -172,6 +182,7 @@ public class ResourceController {
     }
 
     //课程资源，教师，删除
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/resource/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody Resource requestResource){
@@ -181,6 +192,7 @@ public class ResourceController {
     }
 
     //所有资源，下载
+    //@RequiresRoles(value={"student","teacher"}, logical = Logical.OR)
     @RequestMapping(value = "/resource/download")
     public void download(HttpServletRequest request, HttpServletResponse response ,@RequestParam("id") int id){
         try {

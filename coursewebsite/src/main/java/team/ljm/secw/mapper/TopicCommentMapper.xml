@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.ljm.secw.mapper.TopicCommentMapper">
+
+    <select id="selectTopicCommentListByTopicId" resultType="team.ljm.secw.entity.TopicComment">
+        select id, account, content, released_at
+        from t_topic_comment
+        where topic_id = #{topicId}
+        order by released_at DESC
+    </select>
+
+    <delete id="deleteTopicCommentById">
+        delete from t_topic_comment
+        where id = #{id}
+    </delete>
+
+    <insert id="insertTopicComment">
+        insert into t_topic_comment(topic_id, account, content)
+        values(#{topicId}, #{account}, #{content})
+    </insert>
+
+    <update id="updateTopicCommentNumByTopicId">
+        update t_topic
+        set comment_num = comment_num + 1
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTopicCommentByTopicId">
+        delete from t_topic_comment
+        where topic_id = #{topicId}
+    </delete>
+
+</mapper>

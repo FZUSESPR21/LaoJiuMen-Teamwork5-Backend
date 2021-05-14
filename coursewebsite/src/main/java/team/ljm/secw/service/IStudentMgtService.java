@@ -1,6 +1,7 @@
 package team.ljm.secw.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import team.ljm.secw.dto.StudentExcelDTO;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.vo.ResponseVO;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface IStudentMgtService {
 
-    ResponseVO readExcelFile(MultipartFile file);
+    ResponseVO readExcelFile(StudentExcelDTO studentExcelDTO);
 
     List<Student> findStudentListByClazzId(int clazzId);
 

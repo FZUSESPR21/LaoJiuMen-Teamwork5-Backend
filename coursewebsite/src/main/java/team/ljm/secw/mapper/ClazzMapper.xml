@@ -9,6 +9,7 @@
         select id, clazz_name
         from t_clazz
         where teacher_id = #{teacherId}
+        order by created_at DESC
     </select>
 
     <insert id="insert">

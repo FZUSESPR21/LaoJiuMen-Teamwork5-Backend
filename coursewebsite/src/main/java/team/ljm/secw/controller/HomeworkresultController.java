@@ -2,6 +2,8 @@ package team.ljm.secw.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +35,7 @@ public class HomeworkresultController {
     private IHomeworkresultService homeworkResultService;
 
     //根据作业id获取结果列表
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework_result/all")
     @ResponseBody
     public ResponseVO selectByHwId(@RequestParam("homeworkId")  int homeworkId,
@@ -44,6 +47,7 @@ public class HomeworkresultController {
     }
 
     //根据作业id获取提交情况
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework_result/all_sub")
     @ResponseBody
     public ResponseVO selectInfoByHwId(@RequestParam("homeworkId")  int homeworkId,
@@ -55,6 +59,7 @@ public class HomeworkresultController {
     }
 
     //根据作业id获取未提交列表
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework_result/not_sub")
     @ResponseBody
     public ResponseVO selectNoSub(@RequestParam("homeworkId")  int homeworkId,
@@ -66,6 +71,7 @@ public class HomeworkresultController {
     }
 
     //根据作业id获取未批改列表
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework_result/not_cor")
     @ResponseBody
     public ResponseVO selectNoCor(@RequestParam("homeworkId")  int homeworkId,
@@ -77,6 +83,7 @@ public class HomeworkresultController {
     }
 
     //根据作业id获取已经批改列表
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework_result/cor")
     @ResponseBody
     public ResponseVO selectCor(@RequestParam("homeworkId")  int homeworkId,
@@ -88,6 +95,7 @@ public class HomeworkresultController {
     }
 
     //批改作业
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework_result/update")
     @ResponseBody
     public ResponseVO update(@RequestBody HomeworkResult requestHomeworkResult){
@@ -97,6 +105,7 @@ public class HomeworkresultController {
     }
 
     //删除一个作业结果
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework_result/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody HomeworkResult requestHomeworkResult, HttpServletRequest request){
@@ -113,19 +122,20 @@ public class HomeworkresultController {
     }
 
     //学生提交作业（包括更新）
+    //@RequiresRoles("student")
     @RequestMapping("/student/homework_result/submit")
     @ResponseBody
     public ResponseVO submit(@ModelAttribute HomeworkResultDTO requestHomeworkResult, HttpServletRequest request, Model model) {
         MultipartFile file = requestHomeworkResult.getFile();
-        if (file != null){
+        if (file != null) {
             //将附件储存
             try {
                 String originalFileName = file.getOriginalFilename();
                 String fileUrl = "";
-                Date date = new Date();
-                requestHomeworkResult.setSubmittedAt(date);
                 fileUrl = "/WEB-INF/homework/" + requestHomeworkResult.getHomeworkId() + "/" + requestHomeworkResult.getStudentId() + "/" + originalFileName;
                 fileUrl = request.getSession().getServletContext().getRealPath(fileUrl);
+                Date date = new Date();
+                requestHomeworkResult.setSubmittedAt(date);
                 //向url地址存储文件
                 FileUtil.writeFileToUrl(file, fileUrl);
                 requestHomeworkResult.setFilePath(fileUrl);
@@ -136,7 +146,13 @@ public class HomeworkresultController {
         HomeworkResult homeworkResult = new HomeworkResult();
         homeworkResult.setHomeworkId(requestHomeworkResult.getHomeworkId());
         homeworkResult.setStudentId(requestHomeworkResult.getStudentId());
-        homeworkResult.setFilePath(requestHomeworkResult.getFilePath());
+
+        if (requestHomeworkResult.getFilePath() != null) {
+            homeworkResult.setFilePath(requestHomeworkResult.getFilePath());
+        } else {
+            homeworkResult.setFilePath("");
+        }
+
         homeworkResult.setContent(requestHomeworkResult.getContent());
         Integer id = homeworkResultService.findResultStatus(homeworkResult);
         if (id == null){
@@ -148,8 +164,8 @@ public class HomeworkresultController {
         Date date = new Date();
         requestHomeworkResult.setSubmittedAt(date);
         //已经交过，判定为更新提交结果
-        if (id != -2){
-            HomeworkResult homeworkResult1 = homeworkResultService.findById(id);
+        if (id == -1){
+            HomeworkResult homeworkResult1 = homeworkResultService.findResultStu(homeworkResult);
             String url = homeworkResult1.getFilePath();
             Path path = Paths.get(url);
             try {
@@ -166,6 +182,7 @@ public class HomeworkresultController {
     }
 
     //学生查看已提交详情
+    @RequiresRoles("student")
     @RequestMapping("/student/homework_result/search")
     @ResponseBody
     public ResponseVO selectByHwIdStuId(@RequestParam("studentId") int studentId,
@@ -178,6 +195,7 @@ public class HomeworkresultController {
     }
 
     //下载附件
+    //@RequiresRoles(value={"student","teacher"}, logical = Logical.OR)
     @RequestMapping(value = "/homework_result/download")
     public void download(HttpServletRequest request, HttpServletResponse response , @RequestParam("id") int id){
         try {
@@ -207,6 +225,7 @@ public class HomeworkresultController {
     }
 
     //学生姓名查看
+    @RequiresRoles("student")
     @RequestMapping("/student/homework_result/stu_info")
     @ResponseBody
     public ResponseVO selectStuById(@RequestParam("studentId") int studentId){
@@ -215,6 +234,7 @@ public class HomeworkresultController {
     }
 
     //学生查看提交列表
+    @RequiresRoles("student")
     @RequestMapping("/student/homework_result/all")
     @ResponseBody
     public ResponseVO selectByStuId(@RequestParam("studentId")  int studentId,

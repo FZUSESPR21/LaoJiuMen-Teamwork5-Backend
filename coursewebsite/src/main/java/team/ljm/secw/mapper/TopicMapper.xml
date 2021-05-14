@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.ljm.secw.mapper.TopicMapper">
+
+    <select id="selectTopicList" resultType="team.ljm.secw.entity.Topic">
+        select id, account, title, content, comment_num, released_at
+        from t_topic
+        order by released_at DESC
+    </select>
+
+    <insert id="insertTopic">
+        insert into t_topic(account, title, content)
+        values (#{account}, #{title}, #{content})
+    </insert>
+
+    <select id="selectMyTopicList" resultType="team.ljm.secw.entity.Topic">
+        select id, account, title, content, comment_num, released_at
+        from t_topic
+        where account = #{account}
+        order by released_at DESC
+    </select>
+
+    <delete id="deleteTopicById">
+        delete from t_topic
+        where id = #{id}
+    </delete>
+
+    <select id="selectTopicListByTitle" resultType="team.ljm.secw.entity.Topic">
+        select id, account, title, content, comment_num, released_at
+        from t_topic
+        where title like #{title}
+        order by released_at DESC
+    </select>
+
+    <select id="selectTopicListByAccount" resultType="team.ljm.secw.entity.Topic">
+        select id, account, title, content, comment_num, released_at
+        from t_topic
+        where account = #{account}
+        order by released_at DESC
+    </select>
+
+</mapper>

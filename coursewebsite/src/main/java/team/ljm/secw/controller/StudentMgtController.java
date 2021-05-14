@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import team.ljm.secw.dto.StudentExcelDTO;
 import team.ljm.secw.entity.Clazz;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.service.IClazzService;
@@ -30,11 +31,10 @@ public class StudentMgtController {
     @Autowired
     IClazzService clazzService;
 
-
     @RequestMapping(value = "/teacher/stu_mgt/excel")
     @ResponseBody
-    public ResponseVO doExcel(@RequestParam(value = "file_excel")MultipartFile file) {
-        return studentMgtService.readExcelFile(file);
+    public ResponseVO doExcel(@ModelAttribute StudentExcelDTO studentExcelDTO) {
+        return studentMgtService.readExcelFile(studentExcelDTO);
     }
 
     @RequestMapping(value = "/teacher/stu_mgt/down")

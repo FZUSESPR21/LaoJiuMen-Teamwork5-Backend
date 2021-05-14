@@ -17,7 +17,7 @@ public class HttpInterceptor implements HandlerInterceptor {
         // 允许自定义请求头token(允许head跨域)
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Accept, Origin, Content-Disposition, X-Requested-With, Content-Type, Last-Modified");
-        //response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         return true;
     }
 

@@ -3,6 +3,8 @@ package team.ljm.secw.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,9 +35,9 @@ public class HomeworkController {
     private IHomeworkresultService homeworkResultService;
 
     //课程作业，教师，全部,测试用
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework/real_all")
     @ResponseBody
-    //@RequiresRoles("teacher")
     public ResponseVO allHomework(@RequestParam(value = "pn",defaultValue = "1") int pn){
         PageHelper.startPage(pn,5);
         List<HomeworkInfoDTO> list = new ArrayList<>();
@@ -60,6 +62,7 @@ public class HomeworkController {
     }
 
     //课程作业，教师，按班级查
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework/all")
     @ResponseBody
     public ResponseVO myClassHomework(@RequestParam("clazzId")  int clazzId,
@@ -85,6 +88,7 @@ public class HomeworkController {
     }
 
     //课程作业，教师，发布新作业
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework/add")
     @ResponseBody
     public ResponseVO addHomework(@RequestBody Homework requestHomework){
@@ -102,6 +106,7 @@ public class HomeworkController {
     }
 
     //课程作业，教师，修改作业
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework/update")
     @ResponseBody
     public ResponseVO updateHomework(@RequestBody Homework requestHomework){
@@ -110,6 +115,7 @@ public class HomeworkController {
     }
 
     //课程作业，教师学生，按id查
+    @RequiresRoles(value={"student","teacher"}, logical = Logical.OR)
     @RequestMapping("/homework/search")
     @ResponseBody
     public ResponseVO searchById(@RequestBody Homework requestHomework){
@@ -119,16 +125,17 @@ public class HomeworkController {
     }
 
     //课程作业，教师，删除
+    @RequiresRoles("teacher")
     @RequestMapping("/teacher/homework/delete")
     @ResponseBody
     public ResponseVO delete(@RequestBody Homework requestHomework){
         int id = requestHomework.getId();
         int rel = homeworkService.remove(id);
-        ResponseVO response = new ResponseVO("200","success");
-        return response;
+        return new ResponseVO("200","success");
     }
 
     //课程作业，学生，按班级查,测试用
+    @RequiresRoles("student")
     @RequestMapping("/student/homework/real_all")
     @ResponseBody
     public ResponseVO classHomework(@RequestParam("clazzId") int clazzId,
@@ -140,6 +147,7 @@ public class HomeworkController {
     }
 
     //课程作业，学生，按班级查，开始时间要在当前时间之后
+    @RequiresRoles("student")
     @RequestMapping("/student/homework/all")
     @ResponseBody
     public ResponseVO classHomeworkNow(@RequestParam("clazzId") int clazzId,

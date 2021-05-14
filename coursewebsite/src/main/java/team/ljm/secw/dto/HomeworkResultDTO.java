@@ -17,6 +17,7 @@ public class HomeworkResultDTO {
     private String account;
     private String studentName;
     private String title;
+    private String homeworkContent;
     private MultipartFile file;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
@@ -36,9 +37,18 @@ public class HomeworkResultDTO {
                 ", account='" + account + '\'' +
                 ", studentName='" + studentName + '\'' +
                 ", title='" + title + '\'' +
+                ", homeworkContent='" + homeworkContent + '\'' +
                 ", file=" + file +
                 ", submittedAt=" + submittedAt +
                 '}';
+    }
+
+    public String getHomeworkContent() {
+        return homeworkContent;
+    }
+
+    public void setHomeworkContent(String homeworkContent) {
+        this.homeworkContent = homeworkContent;
     }
 
     public int getId() {

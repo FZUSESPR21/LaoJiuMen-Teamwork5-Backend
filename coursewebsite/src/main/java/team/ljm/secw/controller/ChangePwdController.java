@@ -10,6 +10,7 @@ import team.ljm.secw.dto.VerificationDTO;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.entity.Teacher;
 import team.ljm.secw.service.IChangePwdService;
+import team.ljm.secw.utils.MySessionContext;
 import team.ljm.secw.utils.SendMailUtil;
 import team.ljm.secw.vo.ResponseVO;
 
@@ -28,9 +29,9 @@ public class ChangePwdController {
 
     @RequestMapping(value = "/captcha", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseVO sendCaptchaEmail(@RequestBody VerificationDTO verificationDTO, HttpSession session) {
+    public ResponseVO sendCaptchaEmail(@RequestBody VerificationDTO verificationDTO, HttpServletRequest request) {
+        HttpSession session = request.getSession();
         String captcha = String.valueOf(new Random().nextInt(899999) + 100000);
-        System.out.println(verificationDTO);
         if ("0".equals(verificationDTO.getType())) {
             String email = changePwdService.findStudentEmailByAccount(verificationDTO.getAccount());
             return getResponseVO(verificationDTO, session, captcha, email);
@@ -54,7 +55,7 @@ public class ChangePwdController {
             System.out.println("1:"+account1);
             System.out.println("1:"+email1);
             System.out.println("1:"+captcha1);
-            return new ResponseVO("200", "验证码已发送");
+            return new ResponseVO("200", "验证码已发送", session.getId());
         } else {
             return new ResponseVO("401", "账号或邮箱错误");
         }
@@ -62,11 +63,16 @@ public class ChangePwdController {
 
     @RequestMapping(value = "/chg_pwd", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseVO changePassword(@RequestBody VerificationDTO verificationDTO, HttpSession session) {
+    public ResponseVO changePassword(@RequestBody VerificationDTO verificationDTO, HttpServletRequest request) {
+//        System.out.println(verificationDTO);
+//        System.out.println("cp2:"+request.getSession().getId());
+//        MySessionContext myc= MySessionContext.getInstance();
+//        HttpSession session = myc.getSession(verificationDTO.getSessionId());
+        HttpSession session = request.getSession();
+        //System.out.println("cp1:"+session.getId());
         String account = (String) session.getAttribute("account");
         String email = (String) session.getAttribute("email");
         String captcha = (String) session.getAttribute("captcha");
-        System.out.println(verificationDTO);
         System.out.println(account);
         System.out.println(email);
         System.out.println(captcha);

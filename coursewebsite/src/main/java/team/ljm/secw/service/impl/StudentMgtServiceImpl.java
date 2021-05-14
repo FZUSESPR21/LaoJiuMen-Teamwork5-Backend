@@ -3,6 +3,7 @@ package team.ljm.secw.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import team.ljm.secw.dto.StudentExcelDTO;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.mapper.StudentMgtMapper;
 import team.ljm.secw.service.IStudentMgtService;
@@ -18,17 +19,17 @@ public class StudentMgtServiceImpl implements IStudentMgtService {
     StudentMgtMapper studentMgtMapper;
 
     @Override
-    public ResponseVO readExcelFile(MultipartFile file) {
+    public ResponseVO readExcelFile(StudentExcelDTO studentExcelDTO) {
         List<Student> studentList = null;
         int insertResult = 0;
         String insertMsg = "";
 
         try {
-            studentList = StudentExcelUtil.getExcelInfo(file);
+            studentList = StudentExcelUtil.getExcelInfo(studentExcelDTO.getFile());
 
             for (int i = 0; i < studentList.size(); i++) {
                 studentList.get(i).setPwd("123456");
-                studentList.get(i).setClazzId(1);
+                studentList.get(i).setClazzId(studentExcelDTO.getClazzId());
             }
 
             insertResult = studentMgtMapper.batchInsert(studentList);

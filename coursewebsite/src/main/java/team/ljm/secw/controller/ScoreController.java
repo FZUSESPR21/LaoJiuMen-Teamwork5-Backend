@@ -69,11 +69,11 @@ public class ScoreController {
     @RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/score/final")
     @ResponseBody
-    public ResponseVO showHomeworkScoreList(@RequestParam("cid") int cid) {
+    public ResponseVO showFinalScoreList(@RequestParam("cid") int cid) {
         return new ResponseVO("200", "", scoreService.findFinalScoreByClazzId(cid));
     }
 
-    @RequiresRoles("teacher")
+    //@RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/score/down", method = RequestMethod.GET)
     public void downloadScoreFormat(@RequestParam("clazzId") int clazzId, HttpServletResponse response) {
         try {
@@ -161,7 +161,7 @@ public class ScoreController {
         }
     }
 
-    @RequiresRoles("teacher")
+    //@RequiresRoles("teacher")
     @RequestMapping(value = "/teacher/score/excel")
     @ResponseBody
     public ResponseVO doExcel(@RequestParam(value = "file_excel") MultipartFile file) {
