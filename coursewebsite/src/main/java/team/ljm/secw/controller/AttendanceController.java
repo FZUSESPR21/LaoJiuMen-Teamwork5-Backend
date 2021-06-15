@@ -2,8 +2,10 @@ package team.ljm.secw.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import team.ljm.secw.dto.AttendanceDTO;
 import team.ljm.secw.entity.Attendance;
 import team.ljm.secw.entity.AttendanceResult;
 import team.ljm.secw.entity.Student;
@@ -28,7 +30,7 @@ public class AttendanceController {
     private AttendanceService attendanceService;
     @RequestMapping("/all")
     @ResponseBody
-    public List<Attendance> getAll(Student student){
+    public List<Attendance> getAll(@RequestBody  Student student){
         return this.attendanceService.findAllAttendance(student);
     }
     @RequestMapping("/insert")
@@ -53,12 +55,12 @@ public class AttendanceController {
     }
     @RequestMapping("/release")
     @ResponseBody
-    public int release(Attendance attendance){
+    public int release(AttendanceDTO attendance){
         return attendanceService.releaseAttendance(attendance);
     }
     @RequestMapping("/updateTime")
     @ResponseBody
-    public int updateTime(Attendance attendance){
+    public int updateTime(AttendanceDTO attendance){
         return attendanceService.updateEndAt(attendance);
     }
 }

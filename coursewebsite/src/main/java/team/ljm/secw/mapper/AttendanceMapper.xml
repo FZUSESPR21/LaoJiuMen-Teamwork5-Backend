@@ -34,10 +34,10 @@
     <select id="findAllStu" parameterType="Integer" resultType="Student">
         select * from t_student where clazz_id=#{clazzId}
     </select>
-    <insert id="insertAttendance" parameterType="Attendance" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertAttendance" parameterType="AttendanceDTO" useGeneratedKeys="true" keyProperty="id">
         insert into t_attendance(attendance_name, start_at, end_at, issuer, clazz_id) values(#{attendanceName},#{startAt},#{endAt},#{issuer},#{clazzId})
     </insert>
-    <update id="updateEndAt" parameterType="AttendanceResult">
+    <update id="updateEndAt" parameterType="AttendanceDTO">
         update t_attendance set end_at=#{endAt} where id=#{id}
     </update>
 

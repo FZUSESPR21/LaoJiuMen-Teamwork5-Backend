@@ -1,5 +1,6 @@
 package team.ljm.secw.mapper;
 
+import team.ljm.secw.dto.AttendanceDTO;
 import team.ljm.secw.entity.Attendance;
 import team.ljm.secw.entity.AttendanceResult;
 import team.ljm.secw.entity.Student;
@@ -14,6 +15,6 @@ public interface AttendanceMapper {
     public int updateResult(AttendanceResult attendanceResult);
     public List<AttendanceResult> findStuResult(Integer attendanceId);
     public List<Student> findAllStu(Integer clazzId);
-    public int insertAttendance(Attendance attendance);
-    public int updateEndAt(Attendance attendance);
+    public int insertAttendance(AttendanceDTO attendance);
+    public int updateEndAt(AttendanceDTO attendance);
 }

@@ -1,5 +1,6 @@
 package team.ljm.secw.service;
 
+import team.ljm.secw.dto.AttendanceDTO;
 import team.ljm.secw.entity.Attendance;
 import team.ljm.secw.entity.AttendanceResult;
 import team.ljm.secw.entity.Student;
@@ -13,6 +14,6 @@ public interface AttendanceService {
     public int updateResult(AttendanceResult attendanceResult);
     public List<Attendance> findTeacherAttendance(Integer clazzId);
     public List<AttendanceResult> findStuResult(Integer attendanceId);
-    public int releaseAttendance(Attendance attendance);
-    public int updateEndAt(Attendance attendance);
+    public int releaseAttendance(AttendanceDTO attendance);
+    public int updateEndAt(AttendanceDTO attendance);
 }

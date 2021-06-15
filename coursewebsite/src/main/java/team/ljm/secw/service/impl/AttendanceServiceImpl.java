@@ -3,6 +3,7 @@ package team.ljm.secw.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.ljm.secw.dto.AttendanceDTO;
 import team.ljm.secw.entity.Attendance;
 import team.ljm.secw.entity.AttendanceResult;
 import team.ljm.secw.entity.Student;
@@ -91,7 +92,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public int releaseAttendance(Attendance attendance) {
+    public int releaseAttendance(AttendanceDTO attendance) {
         Date d=new Date();
         attendance.setStartAt(d);
         int rows=attendanceMapper.insertAttendance(attendance);
@@ -107,7 +108,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public int updateEndAt(Attendance attendance) {
+    public int updateEndAt(AttendanceDTO attendance) {
         return attendanceMapper.updateEndAt(attendance);
     }
 
