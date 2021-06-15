@@ -11,6 +11,7 @@ import team.ljm.secw.entity.AttendanceResult;
 import team.ljm.secw.entity.Student;
 import team.ljm.secw.entity.StudentVo;
 import team.ljm.secw.service.AttendanceService;
+import team.ljm.secw.vo.ResponseVO;
 
 import java.util.List;
 
@@ -30,37 +31,37 @@ public class AttendanceController {
     private AttendanceService attendanceService;
     @RequestMapping("/all")
     @ResponseBody
-    public List<Attendance> getAll(@RequestBody  Student student){
-        return this.attendanceService.findAllAttendance(student);
+    public ResponseVO getAll(@RequestBody  Student student){
+        return new ResponseVO("200","",this.attendanceService.findAllAttendance(student));
     }
     @RequestMapping("/insert")
     @ResponseBody
-    public int insert(AttendanceResult attendanceResult){
-        return this.attendanceService.insertStuAttendance(attendanceResult);
+    public ResponseVO insert(@RequestBody AttendanceResult attendanceResult){
+        return new ResponseVO("200","",this.attendanceService.insertStuAttendance(attendanceResult));
     }
     @RequestMapping("/teacherAll")
     @ResponseBody
-    public List<Attendance> teacherAll(Integer clazzId){
-        return this.attendanceService.findTeacherAttendance(clazzId);
+    public ResponseVO teacherAll(@RequestBody Integer clazzId){
+        return new ResponseVO("200","",this.attendanceService.findTeacherAttendance(clazzId));
     }
     @RequestMapping("/stuUpdate")
     @ResponseBody
-    public int stuUpdate(AttendanceResult attendanceResult){
-        return this.attendanceService.updateResult(attendanceResult);
+    public ResponseVO stuUpdate(@RequestBody AttendanceResult attendanceResult){
+        return new ResponseVO("200","",this.attendanceService.updateResult(attendanceResult));
     }
     @RequestMapping("/stuList")
     @ResponseBody
-    public List<AttendanceResult> AttendenceList(Integer attendanceId){
-        return attendanceService.findStuResult(attendanceId);
+    public ResponseVO AttendenceList(@RequestBody Integer attendanceId){
+        return new ResponseVO("200","",attendanceService.findStuResult(attendanceId));
     }
     @RequestMapping("/release")
     @ResponseBody
-    public int release(AttendanceDTO attendance){
-        return attendanceService.releaseAttendance(attendance);
+    public ResponseVO release(@RequestBody AttendanceDTO attendance){
+        return new ResponseVO("200","",attendanceService.releaseAttendance(attendance));
     }
     @RequestMapping("/updateTime")
     @ResponseBody
-    public int updateTime(AttendanceDTO attendance){
-        return attendanceService.updateEndAt(attendance);
+    public ResponseVO updateTime(@RequestBody AttendanceDTO attendance){
+        return new ResponseVO("200","",attendanceService.updateEndAt(attendance));
     }
 }
