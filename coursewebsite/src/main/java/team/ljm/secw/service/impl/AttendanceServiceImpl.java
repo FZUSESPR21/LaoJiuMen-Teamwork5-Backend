@@ -20,9 +20,9 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Autowired
     private AttendanceMapper attendanceMapper;
     @Override
-    public List<Attendance> findAllAttendance(Student student) {
+    public List<AttendanceDTO> findAllAttendance(Student student) {
         System.out.println(student);
-        List<Attendance> attendances= attendanceMapper.findAllAttendance(student.getClazzId());
+        List<AttendanceDTO> attendances= attendanceMapper.findAllAttendance(student.getClazzId());
         List<AttendanceResult> attendanceResults=attendanceMapper.findResult(student.getId());
         for(int i=0;i<attendances.size();i++){
             attendances.get(i).setResult(false);
@@ -69,8 +69,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public List<Attendance> findTeacherAttendance(Integer clazzId) {
-        List<Attendance> attendances= attendanceMapper.findAllAttendance(clazzId);
+    public List<AttendanceDTO> findTeacherAttendance(Integer clazzId) {
+        List<AttendanceDTO> attendances= attendanceMapper.findAllAttendance(clazzId);
         for(int i=0;i<attendances.size();i++){
             Date startAt=attendances.get(i).getStartAt();
             Date endAt=attendances.get(i).getEndAt();

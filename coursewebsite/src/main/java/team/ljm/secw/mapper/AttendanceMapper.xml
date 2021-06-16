@@ -5,7 +5,7 @@
 
 <mapper namespace="team.ljm.secw.mapper.AttendanceMapper">
 
-    <select id="findAllAttendance" resultType="Attendance" parameterType="Integer">
+    <select id="findAllAttendance" resultType="AttendanceDTO" parameterType="Integer">
         select * from t_attendance a where clazz_id=#{clazzId}
     </select>
     <select id="findResult" parameterType="Integer" resultType="AttendanceResult">

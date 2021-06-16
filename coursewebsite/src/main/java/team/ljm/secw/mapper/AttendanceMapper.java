@@ -9,7 +9,7 @@ import team.ljm.secw.entity.StudentVo;
 import java.util.List;
 
 public interface AttendanceMapper {
-    public List<Attendance> findAllAttendance(Integer clazzId);
+    public List<AttendanceDTO> findAllAttendance(Integer clazzId);
     public int insertStuAttendance(AttendanceResult attendanceResult);
     public List<AttendanceResult> findResult(Integer studentid);
     public int updateResult(AttendanceResult attendanceResult);
